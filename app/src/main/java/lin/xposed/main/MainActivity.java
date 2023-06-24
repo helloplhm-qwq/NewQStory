@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         this.setContentView(mainBinding.getRoot());
+        mainBinding.gitButton.setText("开源地址 希望能帮到你");
         mainBinding.gitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
