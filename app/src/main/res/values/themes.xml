@@ -1,0 +1,49 @@
+<resources>
+
+
+    <style name="NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--无标题-->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+    <!--用来处理冷启动白屏黑屏的问题-->
+    <style
+            name="WelcomeContentOverlay"
+            parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <!--闪屏自定义背景，需要自定义drawable，可以解决冷启动白屏现象-->
+        <!--        <item name="android:windowBackground">@drawable/startpic</item>-->
+        <!--无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--全屏-->
+        <item name="android:windowFullscreen">true</item>
+        <!--窗口半透明-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--窗口内容叠加-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--半透明导航栏-->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <!--状态栏颜色-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+    <!--自定义Dialog样式-->
+    <style name="dialog"
+           parent="@android:style/Theme.Dialog">
+        <!--边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--半透明-->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--背景透明-->
+        <item name="android:background">@android:color/transparent</item>
+        <!--窗口外背景透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--背景是否变暗-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 点击外部是否允许取消 -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+</resources>
