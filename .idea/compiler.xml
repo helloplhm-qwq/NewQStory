@@ -16,7 +16,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.7.1/458d9042f7aa6fa9a634df902b37f544e15aacac/error_prone_annotations-2.7.1.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar" />
         </processorPath>
-        <module name="HookDemo.Javaibrary.main" />
+        <module name="HookDemo.AnnotationProcessor.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />

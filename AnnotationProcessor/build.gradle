@@ -2,12 +2,13 @@ plugins {
     id 'java-library'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+System.out.println("[start] build Annotation processor")
+
 dependencies {
-    //noinspection AnnotationProcessorOnCompilePath
     implementation 'com.google.auto.service:auto-service:1.0.1'
     annotationProcessor 'com.google.auto.service:auto-service:1.0.1'
 }

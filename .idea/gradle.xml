@@ -4,13 +4,14 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../Gradle/gradle-8.0.2" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Javaibrary" />
+            <option value="$PROJECT_DIR$/AnnotationProcessor" />
             <option value="$PROJECT_DIR$/ReflectUtils" />
             <option value="$PROJECT_DIR$/app" />
           </set>

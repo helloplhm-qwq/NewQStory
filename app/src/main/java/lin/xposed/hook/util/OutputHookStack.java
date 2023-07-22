@@ -63,7 +63,7 @@ public class OutputHookStack {
 
         stringBuffer.append("\n-------------------------------------------------------------------\n\n");
 
-        writeFileText(OUTPUT_LOG_DIR + "对象反射记录/" + ThisClass.getName() + ".java", stringBuffer.toString(), true);
+        writeFileText(OUTPUT_LOG_DIR + "对象反射记录/" + ThisClass.getName() + ".java", stringBuffer.toString());
     }
 
     /**
@@ -114,7 +114,7 @@ public class OutputHookStack {
         stringBuffer.append("\n\n-------------------------------------------------------------------");
         stringBuffer.append("\n\n\n");
 
-        writeFileText(OUTPUT_LOG_DIR + "动态反射记录/" + thisClass.getName() + "." + param.method.getName() + ".java", stringBuffer.toString(), true);
+        writeFileText(OUTPUT_LOG_DIR + "动态反射记录/" + thisClass.getName() + "." + param.method.getName() + ".java", stringBuffer.toString());
     }
 
     private static void f(StringBuilder stringBuffer, Field f) {
@@ -216,11 +216,10 @@ public class OutputHookStack {
     /**
      * 向文件写入文本
      *
-     * @param path     路径
-     * @param content  内容
-     * @param isAppend 是否追写 是的话不会覆盖原有文件内容
+     * @param path    路径
+     * @param content 内容
      */
-    private static void writeFileText(String path, String content, boolean isAppend) {
+    private static void writeFileText(String path, String content) {
         File file = new File(path);
         BufferedWriter writer = null;
         try {
@@ -230,7 +229,7 @@ public class OutputHookStack {
                 }
                 file.createNewFile();
             }
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, isAppend), StandardCharsets.UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), StandardCharsets.UTF_8));
             writer.write(content);
         } catch (IOException ignored) {
 

@@ -7,14 +7,15 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.load.declarelabels.HookItem;
+import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.util.XPBridge;
+import top.linl.annotationprocessor.HookItem;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @HookItem
-public class HookSensorEventListener {
+public class HookSensorEventListener extends BaseHookItem {
     private static final long TOTAL_TIME = 1000 * 10;
     private static final long ON_TICK_TIME = 1000;
     private static final AtomicBoolean startActivityHasEnd = new AtomicBoolean();
@@ -36,10 +37,10 @@ public class HookSensorEventListener {
         }
     };
 
-    public void startHook() {
+    @Override
+    public void loadHook() {
         //开始倒计时
         countDownTimer.start();
-
         Method allClassMethod = MethodUtils.findMethod(ClassLoader.class, "loadClass", Class.class, new Class[]{String.class});
         XposedBridge.hookMethod(allClassMethod, new XC_MethodHook() {
             @Override
@@ -54,11 +55,10 @@ public class HookSensorEventListener {
                     for (Class<?> interfaces : interfacesList) {
                         //判断该类是否实现了这个接口
                         if (interfaces == SensorEventListener.class) {
-                            Method onSensorChanged = MethodUtils.findUnknownReturnMethod(clz, "onSensorChanged", new Class[]{SensorEvent.class});
+                            Method onSensorChanged = MethodUtils.findUnknownReturnTypeMethod(clz, "onSensorChanged", new Class[]{SensorEvent.class});
                             XPBridge.hookBefore(onSensorChanged, onSensorParam -> {
                                 //如果启动页结束了就不再拦截了
                                 if (!startActivityHasEnd.get()) {
-
                                     //在beforeHookedMethod时使用setResult则不会执行剩余的代码
                                     onSensorParam.setResult(null);
                                 }
@@ -68,7 +68,15 @@ public class HookSensorEventListener {
                 }
             }
         });
-
     }
 
+    @Override
+    public String getItemName() {
+        return "禁止启动时摇一摇跳转到其他软件";
+    }
+
+    @Override
+    public boolean isLoadedByDefault() {
+        return true;
+    }
 }

@@ -6,7 +6,8 @@ public class CheckClassType {
     public static boolean CheckClass(Class<?> clz, Class<?> convert) {
         if (clz.equals(convert)) return true;
         if (clz.equals(hasType(convert))) return true;
-        return clz.isAssignableFrom(convert);
+        if (clz.isAssignableFrom(convert)) return true;
+        return (clz.getName().startsWith("kotlin") && clz.getName().equals(convert.getName()));//防止QQKtJvm内存类型不一致导致匹配失败
     }
 
     private static Class<?> hasType(Class<?> clz) {

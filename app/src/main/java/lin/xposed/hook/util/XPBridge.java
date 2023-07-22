@@ -103,7 +103,7 @@ public class XPBridge {
     }
 
     public interface Action {
-        void execute(XC_MethodHook.MethodHookParam param);
+        void execute(XC_MethodHook.MethodHookParam param) throws Exception;
     }
 }
 

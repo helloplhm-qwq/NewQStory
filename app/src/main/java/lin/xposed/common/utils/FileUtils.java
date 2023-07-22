@@ -3,6 +3,7 @@ package lin.xposed.common.utils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class FileUtils {
 
     private static final int BYTE_SIZE = 1024;
