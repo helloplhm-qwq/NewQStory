@@ -4,6 +4,3 @@
 [![Telegram](https://img.shields.io/static/v1?label=Telegram&message=Channel&color=0088cc)](https://t.me/WhenFlowersAreInBloom)
 </div>
 
-## Android Xposed TestDemo
-
-g
