@@ -13,8 +13,7 @@ public class JSONUtil {
      */
     public static void analysisJson(Object objJson, Action action) {
         //如果objJson为json数组
-        if (objJson instanceof JSONArray) {
-            JSONArray objArray = (JSONArray) objJson;
+        if (objJson instanceof JSONArray objArray) {
             for (int i = 0; i < objArray.length(); i++) {
                 try {
                     analysisJson(objArray.get(i), action);

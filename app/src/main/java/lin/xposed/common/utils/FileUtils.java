@@ -1,6 +1,18 @@
 package lin.xposed.common.utils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -75,9 +87,10 @@ public class FileUtils {
 
     public static String readFileText(String filePath) throws IOException {
         File path = new File(filePath);
+        //此路径无文件
         if (!path.exists()) {
             throw new IOException("path No exists :" + path.getAbsolutePath());
-        } else if (path.isDirectory()) {
+        } else if (path.isDirectory())/*此文件是目录*/ {
             throw new IOException("Non-file type :" + path.getAbsolutePath());
         }
         StringBuilder stringBuilder = new StringBuilder();

@@ -1,12 +1,12 @@
 package lin.xposed.hook.util;
 
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
-
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicReference;
+
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XposedBridge;
 
 public class XPBridge {
 

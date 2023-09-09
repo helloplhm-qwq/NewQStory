@@ -1,12 +1,12 @@
 package lin.xposed.hook.util;
 
 
-import lin.xposed.common.utils.FileUtils;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+
+import lin.xposed.common.utils.FileUtils;
 
 public class LogUtils {
     //日志根目录 需以目录分隔符结束
@@ -20,14 +20,31 @@ public class LogUtils {
         return LOG_ROOT_DIRECTORY + "ErrorLog" + File.separator;
     }
 
-    public static String getStackTrace(Exception exception) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(exception).append("\n");
-        StackTraceElement[] stackTraceElements = exception.getStackTrace();
+
+    /**
+     * @return 获取调用此方法的调用栈
+     */
+    public static String getCallStack() {
+        Throwable throwable = new Throwable();
+        return getStackTrace(throwable);
+    }
+
+    /**
+     * 获取堆栈跟踪
+     *
+     * @param throwable new Throwable || Exception
+     * @return 堆栈跟踪
+     */
+    public static String getStackTrace(Throwable throwable) {
+        StringBuilder result = new StringBuilder();
+        result.append(throwable).append("\n");
+        StackTraceElement[] stackTraceElements = throwable.getStackTrace();
         for (StackTraceElement stackTraceElement : stackTraceElements) {
-            sb.append(stackTraceElement).append("\n");
+            //不把当前类加入结果中
+            if (stackTraceElement.getClassName().equals(LogUtils.class.getName())) continue;
+            result.append(stackTraceElement).append("\n");
         }
-        return sb.toString();
+        return result.toString();
     }
 
     public static void addError(Exception e) {
@@ -67,17 +84,17 @@ public class LogUtils {
 
 
     private static void addLog(String fileName, String Description, Object content, boolean isError) {
-        new Thread(() -> {
 
-            String path = (isError ? getErrorLogDirectory() : getRunLogDirectory()) + fileName + ".txt";
-            StringBuilder stringBuffer = new StringBuilder(getTime());
-            stringBuffer.append("\n").append(Description);
-            if (content instanceof Exception) {
-                stringBuffer.append("\n").append(getStackTrace((Exception) content));
-            }
-            stringBuffer.append("\n\n");
-            FileUtils.writeTextToFile(path, stringBuffer.toString(), true);
-        }).start();
+
+        String path = (isError ? getErrorLogDirectory() : getRunLogDirectory()) + fileName + ".txt";
+        StringBuilder stringBuffer = new StringBuilder(getTime());
+        stringBuffer.append("\n").append(Description);
+        if (content instanceof Exception) {
+            stringBuffer.append("\n").append(getStackTrace((Exception) content));
+        }
+        stringBuffer.append("\n\n");
+        FileUtils.writeTextToFile(path, stringBuffer.toString(), true);
+
     }
 
     public static String getTime() {

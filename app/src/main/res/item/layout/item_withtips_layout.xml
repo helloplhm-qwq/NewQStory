@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!--这里说下场景细节 根布局的大小是根据子布局的最大大小+padding决定的
+    也就是哪里是中心点位是由子布局的最大大小决定 所以switch开关不能比左主文本还大
+    不然布局中心就会由switch决定 这会导致左主文本无法正确在没有tips的情况下占据布局中心点位
+    而如果同时设置 app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" 的话确实可以保证主文本居中
+    但是一旦tips设置为显示状态主文本会依然居中 而tips文本依靠在主文本底部
+     会占用底部空间 而上面的空白空间不会被两个控件均分 而是留空 就会导致非常不美观
+     也就是中间位置要由主文本决定 (把最小高度设置为30dp 比switch大就行)
+     这样就可以让switch开关根据主文本大小决定位置 而不是主文本依靠switch的大小决定位置-->
+    <TextView
+        android:id="@+id/item_left_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:minHeight="23dp"
+        android:text="Item测试文本效果"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toStartOf="@+id/common_item_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_left_tips_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
+        android:text="假如这个功能要附带说明信息的话"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/common_item_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_left_text" />
+
+    <!--以后可能会换成ImageView 别写太死了-->
+    <include
+        layout="@layout/common_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

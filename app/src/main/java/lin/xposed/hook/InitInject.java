@@ -2,20 +2,21 @@ package lin.xposed.hook;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.XModuleResources;
-import de.robv.android.xposed.*;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
-import lin.util.ReflectUtils.ClassUtils;
-import lin.xposed.demo.R;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit, IXposedHookInitPackageResources {
-    private static final AtomicBoolean Initialized = new AtomicBoolean();
+import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import lin.util.ReflectUtils.ClassUtils;
+import lin.xposed.R;
+import top.linl.activity.proxy.ActivityProxyManager;
 
-    public static int IconId = 0;
+public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit {
+    private static final AtomicBoolean Initialized = new AtomicBoolean();
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
@@ -26,8 +27,6 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
         //设置当前应用包名
         HookEnv.setCurrentHostAppPackageName(packageName);
 
-
-        /*不考虑出现锁同步对象空的情况*/
         XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
@@ -35,24 +34,24 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 if (Initialized.getAndSet(true)) return;
 
                 //获取和设置全局上下文和类加载器
-                HookEnv.setHostAppContext((Context) param.args[0]);
-                ClassUtils.setHostClassLoader(HookEnv.getHostAppContext().getClassLoader());
-
+                Context appContext = (Context) param.args[0];
+                HookEnv.setHostAppContext(appContext);
+                ClassUtils.setHostClassLoader(appContext.getClassLoader());
+                ClassUtils.setModuleLoader(InitInject.class.getClassLoader());
+                
+                //初始化注入活动代理
+                ActivityProxyManager.initActivityProxyManager(appContext, HookEnv.ModuleApkPath);
                 try {
                     //加载hook
                     HookInit.loadHook();
                 } catch (Exception e) {
                     XposedBridge.log(e);
                 }
+
             }
         });
     }
 
-    @Override
-    public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam initPackageResourcesParam) throws Throwable {
-        Resources res = XModuleResources.createInstance(HookEnv.ModuleApkPath, initPackageResourcesParam.res);
-        IconId = initPackageResourcesParam.res.addResource(res, R.mipmap.ic_launcher_round);
-    }
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {

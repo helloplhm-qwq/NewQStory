@@ -7,4 +7,28 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--透明-->
+    <color name="transparent">#00000000</color>
+    <!--半透明-->
+    <color name="translucent">#22050505</color>
+
+    <!--透明-->
+    <color name="透明">#00000000</color>
+    <color name="杜若色">#426ab3</color>
+    <color name="桔梗色">#585eaa</color>
+    <color name="蔷薇色">#f05b72</color>
+    <color name="若绿">#7fb80e</color>
+    <color name="银鼠">#a1a3a6</color>
+    <color name="白绿">#cde6c7</color>
+    <color name="生成色">#f6f5ec</color>
+    <color name="桜色">#feeeed</color>
+    <color name="胡粉色">#fffef9</color>
+    <color name="秘色">#76becc</color>
+    <color name="露草色">#33a3dc</color>
+    <color name="群青色">#4e72b8</color>
+    <color name="空色">#90d7ec</color>
+    <color name="水色">#afdfe4</color>
+    <color name="QQ蓝">#00B1FF</color>
+    <color name="QQSettingWhite">#F5F5F5</color>
 </resources>

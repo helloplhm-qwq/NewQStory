@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 从离父布局最左边一个父布局宽度开始向右平移一个父布局的宽度 ， 动画时间4秒-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:duration="100">
+    <translate
+        android:fromXDelta="-100%p"
+        android:toXDelta="0"
+        />
+</set>

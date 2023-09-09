@@ -21,3 +21,21 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class lin.xposed.hook.** {*;}
+-keep class lin.xposed.view.main.** {*;}
+-keep class * extends android.app.Activity {*;}
+#-keep @lin.xposed.hook.HookItem class * {*;}
+-keep class **.R {*;}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+-keep class * implements java.io.Serializable { *; }
+
+-dontwarn javax.**
+
+

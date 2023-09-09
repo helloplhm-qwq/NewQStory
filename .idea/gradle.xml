@@ -7,16 +7,19 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../Gradle/gradle-8.0.2" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../DevTools/Scoop/apps/gradle/8.3" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/AnnotationProcessor" />
-            <option value="$PROJECT_DIR$/ReflectUtils" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/libs/AnnotationProcessor" />
+            <option value="$PROJECT_DIR$/libs/LActivity" />
+            <option value="$PROJECT_DIR$/libs/LReflectUtils" />
           </set>
         </option>
       </GradleProjectSettings>
     </option>
+    <option name="offlineMode" value="true" />
   </component>
 </project>

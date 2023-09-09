@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--开关开启时的滑块样式 这里的大小决定整体大小-->
+    <item android:state_checked="true">
+        <shape android:shape="oval">
+            <solid android:color="#94C5FF" />
+            <size android:width="23dp" android:height="23dp" />
+        </shape>
+    </item>
+
+    <!--关闭时-->
+    <item android:state_checked="false">
+        <shape android:shape="oval">
+            <solid android:color="#AAA" />
+            <size android:width="23dp" android:height="23dp" />
+        </shape>
+    </item>
+
+</selector>

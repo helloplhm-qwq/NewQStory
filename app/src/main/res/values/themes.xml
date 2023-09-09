@@ -4,13 +4,28 @@
     <style name="NoTitle" parent="Theme.AppCompat.Light.NoActionBar">
         <!--无标题-->
         <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+
+    <!--标题栏延伸到状态栏-->
+    <style name="MDTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+    </style>
+
+    <!--    图片延伸到状态栏-->
+    <style name="MDTheme_IMAGE" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--设置statusBarColor为透明-->
+        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
 
     <!--用来处理冷启动白屏黑屏的问题-->
-    <style
-            name="WelcomeContentOverlay"
-            parent="@android:style/Theme.NoTitleBar.Fullscreen">
+    <style name="WelcomeContentOverlay" parent="@android:style/Theme.NoTitleBar.Fullscreen">
         <!--闪屏自定义背景，需要自定义drawable，可以解决冷启动白屏现象-->
         <!--        <item name="android:windowBackground">@drawable/startpic</item>-->
         <!--无标题-->
@@ -27,8 +42,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
     <!--自定义Dialog样式-->
-    <style name="dialog"
-           parent="@android:style/Theme.Dialog">
+    <style name="dialog" parent="@android:style/Theme.Dialog">
         <!--边框-->
         <item name="android:windowFrame">@null</item>
         <!--是否浮现在activity之上-->

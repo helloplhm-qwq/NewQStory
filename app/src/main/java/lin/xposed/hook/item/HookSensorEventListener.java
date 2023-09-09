@@ -3,22 +3,23 @@ package lin.xposed.hook.item;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.CountDownTimer;
+
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.util.XPBridge;
-import top.linl.annotationprocessor.HookItem;
+import lin.xposed.hook.HookItem;
 
-import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-@HookItem
+@HookItem(value = "禁止启动时触发摇一摇跳转到其他软件",hasPath = false)
 public class HookSensorEventListener extends BaseHookItem {
-    private static final long TOTAL_TIME = 1000 * 10;
-    private static final long ON_TICK_TIME = 1000;
-    private static final AtomicBoolean startActivityHasEnd = new AtomicBoolean();
+    private final long TOTAL_TIME = 1000 * 10;
+    private final long ON_TICK_TIME = 1000;
+    private final AtomicBoolean startActivityHasEnd = new AtomicBoolean();
     /**
      * CountDownTimer 实现倒计时
      */
@@ -37,8 +38,9 @@ public class HookSensorEventListener extends BaseHookItem {
         }
     };
 
+
     @Override
-    public void loadHook() {
+    public void loadHook(ClassLoader loader) {
         //开始倒计时
         countDownTimer.start();
         Method allClassMethod = MethodUtils.findMethod(ClassLoader.class, "loadClass", Class.class, new Class[]{String.class});
@@ -68,11 +70,6 @@ public class HookSensorEventListener extends BaseHookItem {
                 }
             }
         });
-    }
-
-    @Override
-    public String getItemName() {
-        return "禁止启动时摇一摇跳转到其他软件";
     }
 
     @Override

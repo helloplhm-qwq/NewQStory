@@ -12,8 +12,12 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "HookDemo"
-include ':app'
-include ':AnnotationProcessor'
-include ':ReflectUtils'
 
+rootProject.name = "NewQStory"
+include ':app'
+
+def libs = new File(rootDir.getPath() + "/libs")
+for (File module : libs.listFiles()) {
+    include(":"+module.getName())
+    project(":"+module.getName()).projectDir = module
+}

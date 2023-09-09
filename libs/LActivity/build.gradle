@@ -1,0 +1,29 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'top.linl.activity'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 26
+
+    }
+
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    def appcompat_version = "1.7.0-alpha02"
+    //安卓依赖
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+}

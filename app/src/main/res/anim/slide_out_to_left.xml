@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 从父布局最左边向左平移直到完全移出父布局，动画时间4秒 -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="100"
+    android:fillAfter="true">
+    <translate
+        android:fromXDelta="0"
+        android:toXDelta="-100%p"
+        />
+</set>
