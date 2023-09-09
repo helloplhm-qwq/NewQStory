@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
 }
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -11,7 +12,7 @@ dependencies {
 }
 
 
-//输出目录
+/*//输出目录
 File Jar_OutputDirectory = file("$rootDir/app/libs")
 //文件名
 String Jar_File_Name = "LReflectUtils.jar"
@@ -19,9 +20,9 @@ String Jar_File_Name = "LReflectUtils.jar"
 //拼接
 String Jar_OutputPath = Jar_OutputDirectory.toString() + "/" + Jar_File_Name
 
-/**
+*//**
  * 删除旧版本的 jar 包
- */
+ *//*
 tasks.register('clear_Jar', Delete) {
     delete Jar_OutputPath
     System.out.println("[Detete] " + Jar_OutputPath)
@@ -32,7 +33,7 @@ jar {
     archiveFileName = Jar_File_Name  // 指定生成的jar包名称
     destinationDirectory = Jar_OutputDirectory  // 指定输出目录
     System.out.println("[LReflectUtils] Output To " + Jar_OutputPath)
-}
+}*/
 
 
 
