@@ -1,11 +1,11 @@
-package lin.xposed.view.main.itemview;
+package lin.xposed.hook.main.itemview;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 
-import lin.xposed.view.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 
 public class AddTelegramChannel extends OtherViewItemInfo {
     public AddTelegramChannel(Context context) {

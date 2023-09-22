@@ -1,4 +1,4 @@
-package lin.xposed.view.main;
+package lin.xposed.hook.main;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,15 +24,15 @@ import lin.xposed.R;
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.load.HookItemLoader;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
+import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.qq.ToastTool;
-import lin.xposed.view.main.itemListView.ItemFragment;
-import lin.xposed.view.main.itemListView.SettingViewFragment;
-import lin.xposed.view.main.itemview.base.DefaultItemView;
-import lin.xposed.view.main.itemview.base.OtherViewItemInfo;
-import lin.xposed.view.main.itemview.info.DirectoryUiInfo;
-import lin.xposed.view.main.itemview.info.ItemUiInfo;
-import lin.xposed.view.main.itemview.info.ItemUiInfoGroupWrapper;
+import lin.xposed.hook.main.itemListView.ItemFragment;
+import lin.xposed.hook.main.itemListView.SettingViewFragment;
+import lin.xposed.hook.main.itemview.base.DefaultItemView;
+import lin.xposed.hook.main.itemview.info.DirectoryUiInfo;
+import lin.xposed.hook.main.itemview.info.ItemUiInfo;
+import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
 
 /*
  * 初始化流程
@@ -62,7 +62,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
     //有几个创建几次
-
     /**
      * @param viewType this.getItemType(int)
      */

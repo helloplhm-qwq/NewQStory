@@ -1,4 +1,4 @@
-package lin.xposed.view.main.itemview.info;
+package lin.xposed.hook.main.itemview.info;
 
 /**
  * item封装后的Ui信息 (

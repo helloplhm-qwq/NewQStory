@@ -41,6 +41,7 @@ public class OutputHookStack {
         stringBuffer.append("\n-------------------------------------------------------------------");
         stringBuffer.append("\n属性 : \n\n");
         Class<?> ThisClass = obj.getClass();
+
         for (Field f : ThisClass.getDeclaredFields()) {
             f(stringBuffer, f);
             try {

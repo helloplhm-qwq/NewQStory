@@ -1,4 +1,4 @@
-package lin.xposed.view.main;
+package lin.xposed.hook.main;
 
 import android.graphics.Rect;
 import android.view.View;
@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import lin.xposed.common.utils.ScreenParamUtils;
-import lin.xposed.view.main.itemview.base.OtherViewItemInfo;
-import lin.xposed.view.main.itemview.info.ItemUiInfoGroupWrapper;
+import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
+import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
 
 public class LinearSpacingItemDecoration extends RecyclerView.ItemDecoration {
 

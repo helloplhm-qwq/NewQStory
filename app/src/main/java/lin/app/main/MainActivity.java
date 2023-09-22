@@ -1,5 +1,6 @@
-package lin.xposed.main;
+package lin.app.main;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -10,13 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import lin.xposed.BuildConfig;
 import lin.xposed.R;
 import lin.xposed.databinding.ActivityMainBinding;
-import lin.xposed.view.main.itemview.AddTelegramChannel;
+import lin.xposed.hook.main.itemview.AddTelegramChannel;
 import top.linl.annotationprocessor.AnnotationClassNameTools;
 
 
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void initView() {
         try {
             String buildTime = (String) MainActivity.class.getClassLoader().loadClass(AnnotationClassNameTools.getClassName()).getField("BUILD_TIME").get(null);

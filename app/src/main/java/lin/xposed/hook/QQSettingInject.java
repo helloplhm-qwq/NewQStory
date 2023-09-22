@@ -32,7 +32,7 @@ import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.hook.load.base.BaseHookItem;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.XPBridge;
-import lin.xposed.view.main.MainSettingActivity;
+import lin.xposed.hook.main.MainSettingActivity;
 
 @HookItem(value = "注入QQ设置页面", hasPath = false)
 public class QQSettingInject extends BaseHookItem {
@@ -132,21 +132,23 @@ public class QQSettingInject extends BaseHookItem {
                     Object mItem = ConstructorUtils.newInstance(itemClass, new Class[]{Context.class, int.class, CharSequence.class, int.class},
                             context, 0x520a, context.getString(R.string.app_name), R.mipmap.ic_launcher_round);
 
-                    for (Method setOnClickMethod : itemClass.getDeclaredMethods()) {
-                        if (setOnClickMethod.getReturnType() == void.class)
-                            if (setOnClickMethod.getParameterTypes().length == 1)
-                                if (setOnClickMethod.getParameterTypes()[0].equals(ClassUtils.getClass("kotlin.jvm.functions.Function0"))) {
-                                    setOnClickMethod.setAccessible(true);
-                                    //动态代理
-                                    Object onClickListener = Proxy.newProxyInstance(ClassUtils.getHostLoader(),
-                                            new Class[]{setOnClickMethod.getParameterTypes()[0]}, new mOnClickListener(context, itemClass));
-                                    setOnClickMethod.invoke(mItem, onClickListener);
-                                }
 
+                    Method[] setOnClickMethods = MethodUtils.fuzzyLookupMethod(itemClass, new MethodUtils.FuzzyLookupConditions() {
+                        @Override
+                        public boolean isItCorrect(Method currentMethod) {
+                            //在这个类查找所有符合 public void ?(Function0 function0)的方法 可以查找到两个 一个是点击事件 一个是item刚被初始化时的事件
+                            return currentMethod.getReturnType() == void.class &&
+                                    (currentMethod.getParameterTypes().length == 1
+                                            && currentMethod.getParameterTypes()[0].equals(ClassUtils.getClass("kotlin.jvm.functions.Function0")));
+                        }
+                    });
+                    //动态代理设置事件
+                    Object onClickListener = Proxy.newProxyInstance(ClassUtils.getHostLoader(),
+                            new Class[]{ClassUtils.getClass("kotlin.jvm.functions.Function0")}, new mOnClickListener(context, itemClass));
+                    for (Method setOnClickMethod : setOnClickMethods) {
+                        setOnClickMethod.invoke(mItem, onClickListener);
                     }
-                    /*for (Method setOnClickListenerMethod : setOnClickListenerMethods) {
-                        setOnClickListenerMethod.invoke(mItem, onClickListener);
-                    }*/
+
 //                    itemList.add(0,mItem);//add在这里就会和qa放一块 但是我觉得( )的人应该放最上面 所以继续走下面的代码
 
                     //新建类似包装器里的itemList的list用来存放自己的mItem
@@ -267,8 +269,7 @@ public class QQSettingInject extends BaseHookItem {
             boolean isEnterModuleActivity = false;
             Throwable throwable = new Throwable();
             StackTraceElement[] stackTraceElements = throwable.getStackTrace();
-            //不处理太长的调用栈(这样也可以省略下面这个循环)
-            if (stackTraceElements.length > 20) return null;
+
             // 有被自己聪明到)
             for (StackTraceElement stackTraceElement : stackTraceElements) {
                 //判断是不是以此类名开头的内部类再处理 (也可以避免栈中出现此类后loadClass找不到类抛错)

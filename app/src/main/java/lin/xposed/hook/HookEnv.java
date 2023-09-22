@@ -6,7 +6,7 @@ import android.content.Context;
 @SuppressLint("StaticFieldLeak")
 public class HookEnv {
     //目标包名 如果通用填.+
-    public static final String HostPackageName = "com.tencent.mobileqq|com.tencent.tim|com.xiaomi.misettings";
+    public static final String HostPackageName = ".+";
     public static String currentHostAppPackageName;
 
     public static String ModuleApkPath;

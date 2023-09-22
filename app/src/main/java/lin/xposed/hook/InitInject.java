@@ -29,7 +29,7 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
         XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
             @Override
-            protected void afterHookedMethod(MethodHookParam param) {
+            protected void afterHookedMethod(MethodHookParam param) throws ClassNotFoundException {
                 //防止App创建serve的时候Application对象重复创建调用导致的重复注入
                 if (Initialized.getAndSet(true)) return;
 
@@ -38,9 +38,10 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 HookEnv.setHostAppContext(appContext);
                 ClassUtils.setHostClassLoader(appContext.getClassLoader());
                 ClassUtils.setModuleLoader(InitInject.class.getClassLoader());
-                
+
+
                 //初始化注入活动代理
-                ActivityProxyManager.initActivityProxyManager(appContext, HookEnv.ModuleApkPath);
+                ActivityProxyManager.initActivityProxyManager(appContext, HookEnv.ModuleApkPath, R.string.app_name);
                 try {
                     //加载hook
                     HookInit.loadHook();

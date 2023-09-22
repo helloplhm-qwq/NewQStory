@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import top.linl.activity.util.ActivityUtils;
 import top.linl.activity.util.ClassLoaderTool;
 
 public class BaseActivity extends FragmentActivity {
@@ -32,9 +33,13 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.injectResourcesToContext(this);
     }
 
 
+    /**
+     * 将本 Activity 的状态栏设置为透明状态
+     */
     protected void requestTranslucentStatusBar() {
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
@@ -47,7 +52,7 @@ public class BaseActivity extends FragmentActivity {
         window.setNavigationBarColor(Color.TRANSPARENT);
     }
 
-    private class BaseActivityClassLoader extends ClassLoader {
+    private static class BaseActivityClassLoader extends ClassLoader {
         private final ClassLoader mBaseReferencer;
         private final ClassLoader mHostReferencer;
 

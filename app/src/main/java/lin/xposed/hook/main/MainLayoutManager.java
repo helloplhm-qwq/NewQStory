@@ -1,4 +1,4 @@
-package lin.xposed.view.main;
+package lin.xposed.hook.main;
 
 import android.view.View;
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/QQSettingWhite"
     android:padding="30dp"
-    tools:context="lin.xposed.main.MainActivity">
+    tools:context="lin.xposed.lin.app.main.MainActivity">
 
     <RelativeLayout
         android:id="@+id/main_item"

@@ -1,4 +1,4 @@
-package lin.xposed.view.main.itemview.info;
+package lin.xposed.hook.main.itemview.info;
 
 import lin.xposed.hook.load.base.BaseHookItem;
 

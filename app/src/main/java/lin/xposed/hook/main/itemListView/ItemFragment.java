@@ -1,4 +1,4 @@
-package lin.xposed.view.main.itemListView;
+package lin.xposed.hook.main.itemListView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import lin.xposed.R;
-import lin.xposed.view.main.LinearSpacingItemDecoration;
-import lin.xposed.view.main.MainAdapter;
-import lin.xposed.view.main.MainSettingActivity;
-import lin.xposed.view.main.itemview.info.DirectoryUiInfo;
-import lin.xposed.view.main.itemview.info.ItemUiInfoGroupWrapper;
+import lin.xposed.hook.main.LinearSpacingItemDecoration;
+import lin.xposed.hook.main.MainAdapter;
+import lin.xposed.hook.main.MainSettingActivity;
+import lin.xposed.hook.main.itemview.info.DirectoryUiInfo;
+import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
 
 public class ItemFragment extends Fragment {
     private final DirectoryUiInfo directoryUiInfo;

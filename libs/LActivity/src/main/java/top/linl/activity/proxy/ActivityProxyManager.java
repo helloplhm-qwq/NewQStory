@@ -37,10 +37,11 @@ public class ActivityProxyManager {
         }
     }
 
+
     /**
      * 获取插件的随机id
      *
-     * @param context 宿主上下文
+     * @param context       宿主上下文
      * @param pluginApkPath 插件路径
      * @return 随机id
      */
@@ -53,42 +54,45 @@ public class ActivityProxyManager {
             // 2、apk、jar解压缩生成dex存储的目录，
             // 3、本地library库目录，一般为null，
             // 4、父ClassLoader
-            DexClassLoader dexClassLoader = new DexClassLoader(pluginApkPath, optimizedDirectoryFile.getPath(), null, ClassLoader.getSystemClassLoader());
+            DexClassLoader dexClassLoader = new DexClassLoader(pluginApkPath, optimizedDirectoryFile.getPath(),
+                    null, ClassLoader.getSystemClassLoader());
             PackageManager pm = context.getPackageManager();
             PackageInfo info = pm.getPackageArchiveInfo(pluginApkPath, PackageManager.GET_ACTIVITIES);
-            if (info != null) {
-                ApplicationInfo appInfo = info.applicationInfo;
-                String appName = pm.getApplicationLabel(appInfo).toString();
-                String packageName = appInfo.packageName;
+            if (info == null)
+                throw new RuntimeException("Package.getPackageArchiveInfo(pluginApkPath, PackageManager.GET_ACTIVITIES) ");
 
-                //通过使用apk自己的类加载器，反射出R类中相应的内部类进而获取我们需要的资源id
-                Class<?> resClz = dexClassLoader.loadClass(packageName + ".R");
-                for (Class<?> res : resClz.getDeclaredClasses()) {
-                    for (Field idField : res.getDeclaredFields()) {
-                        idField.setAccessible(true);
-                        return (int) idField.get(null);
-                    }
+            ApplicationInfo appInfo = info.applicationInfo;
+//                String appName = pm.getApplicationLabel(appInfo).toString();
+            String packageName = appInfo.packageName;
+
+            //通过使用apk自己的类加载器，反射出R类中相应的内部类进而获取我们需要的资源id
+            Class<?> resClz = dexClassLoader.loadClass(packageName + ".R");
+            for (Class<?> res : resClz.getDeclaredClasses()) {
+                for (Field idField : res.getDeclaredFields()) {
+                    idField.setAccessible(true);
+                    return (int) idField.get(null);
                 }
             }
-        } catch (ClassNotFoundException | IllegalAccessException e) {
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return 0;
+        throw new RuntimeException("LActivity_DEXHotLoad getModuleRandomID Error");
     }
 
     /**
      * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
-     * 模块自身的Activity需要继承本库的top.linl.activity.proxy.BaseActivity才能启动
-     * 无需担心res无法或重复注入 本库会自动获取插件apk的dex并释放获取R.id类来判断是否重复注入 没有注入则自动注入
+     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
      *
      * @param hostContext   宿主的上下文
-     * @param ModuleApkPath 模块的apk运行路径 用于注入res资源 可通过重写接口IXposedHookZygoteInit的void initZygote(StartupParam startupParam)
-     *                      获取到String startupParam.modulePath
+     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口{@code IXposedHookZygoteInit的void initZygote(StartupParam startupParam)}
+     *                      获取到{@code String startupParam.modulePath}
+     * @param ResId 任意Res资源内的id 用于判断res资源是否已经注入到此活动 没有注入自动注入
      */
     public static void initActivityProxyManager(Context hostContext,
-                                                String ModuleApkPath) {
+                                                String ModuleApkPath, int ResId) {
+        if (ResId != 0) Info.resID = ResId;
 
-        Info.resID = getModuleRandomID(hostContext, ModuleApkPath);
         ClassLoaderTool.setHostClassLoader(hostContext.getClassLoader());
         ClassLoaderTool.setModuleLoader(ActivityProxyManager.class.getClassLoader());
         Info.ModuleApkPath = ModuleApkPath;
@@ -113,6 +117,24 @@ public class ActivityProxyManager {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    /**
+     * 用于启动未注册在AndroidManifest的Activity(也就是模块自身的activity)
+     * 模块自身的Activity需要继承本库的 {@link top.linl.activity.BaseActivity} 才能启动
+     * 无需担心res无法或重复注入 本库会自动获取插件apk的dex并释放获取R.id类来判断是否重复注入 没有注入则自动注入
+     * <p>
+     * 如果抛出 java.lang.RuntimeException : LActivity_DEXHotLoad getModuleRandomID Error
+     * 这种情况很可能是插件apk的dex热释放和加载或开启混淆后导致packageName.R类被混淆导致的获取id异常
+     * 如果发生了请使用{@link #initActivityProxyManager(Context, String, int)} 方法
+     *
+     * @param hostContext   宿主的上下文
+     * @param ModuleApkPath 插件的apk运行路径 用于注入res资源 可通过重写接口IXposedHookZygoteInit的void initZygote(StartupParam startupParam)
+     *                      获取到String startupParam.modulePath
+     */
+    public static void initActivityProxyManager(Context hostContext,
+                                                String ModuleApkPath) {
+        Info.resID = getModuleRandomID(hostContext, ModuleApkPath);
+        initActivityProxyManager(hostContext, ModuleApkPath, 0);
     }
 
     private static void replaceInstrumentation(Object activityThread) throws Exception {

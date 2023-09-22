@@ -1,7 +1,5 @@
 package lin.xposed.hook.util.qq;
 
-import android.util.Log;
-
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
 

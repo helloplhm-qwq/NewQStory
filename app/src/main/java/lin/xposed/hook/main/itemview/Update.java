@@ -1,4 +1,4 @@
-package lin.xposed.view.main.itemview;
+package lin.xposed.hook.main.itemview;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,20 +11,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.HttpUtils;
 import lin.xposed.common.utils.ViewUtils;
+import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.util.qq.ToastTool;
-import lin.xposed.main.ModuleBuildInfo;
-import lin.xposed.view.main.itemview.base.OtherViewItemInfo;
+import lin.app.main.ModuleBuildInfo;
 import lin.xposed.widget.MDialog;
 
 public class Update extends OtherViewItemInfo {

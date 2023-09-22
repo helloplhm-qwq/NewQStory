@@ -1,4 +1,4 @@
-package lin.xposed.view.main;
+package lin.xposed.hook.main;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,8 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.R;
-import lin.xposed.view.main.itemListView.SettingViewFragment;
-import lin.xposed.view.main.itemview.info.ItemUiInfoManager;
+import lin.xposed.hook.main.itemListView.SettingViewFragment;
+import lin.xposed.hook.main.itemview.info.ItemUiInfoManager;
 import top.linl.activity.BaseActivity;
 
 

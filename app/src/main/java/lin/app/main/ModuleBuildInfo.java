@@ -1,4 +1,4 @@
-package lin.xposed.main;
+package lin.app.main;
 
 import android.content.Context;
 
