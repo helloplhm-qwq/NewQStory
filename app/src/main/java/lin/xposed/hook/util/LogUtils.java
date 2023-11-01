@@ -61,7 +61,7 @@ public class LogUtils {
      * @param TAG(文件名) 内容
      */
     public static void addRunLog(String TAG, Object content) {
-        addLog(TAG, content.toString(), content, false);
+        addLog(TAG, String.valueOf(content), content, false);
     }
 
     /**
@@ -84,8 +84,6 @@ public class LogUtils {
 
 
     private static void addLog(String fileName, String Description, Object content, boolean isError) {
-
-
         String path = (isError ? getErrorLogDirectory() : getRunLogDirectory()) + fileName + ".txt";
         StringBuilder stringBuffer = new StringBuilder(getTime());
         stringBuffer.append("\n").append(Description);
@@ -94,7 +92,6 @@ public class LogUtils {
         }
         stringBuffer.append("\n\n");
         FileUtils.writeTextToFile(path, stringBuffer.toString(), true);
-
     }
 
     public static String getTime() {

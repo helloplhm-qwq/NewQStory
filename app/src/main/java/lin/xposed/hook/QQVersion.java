@@ -12,6 +12,7 @@ public class QQVersion {
     public static final int QQ_8_9_50 = 3898;
     public static final int QQ_8_9_58 = 4106;
     public static final int QQ_8_9_73 = 4416;
+    public static final int QQ_8_9_78 = 4548;
     public static boolean isQQNT() {
         if (isQQNT != null) return isQQNT.get();
         isQQNT = new AtomicBoolean();

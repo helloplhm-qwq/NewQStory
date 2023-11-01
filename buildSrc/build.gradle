@@ -1,0 +1,12 @@
+repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+}
+
+
+dependencies {
+
+    implementation 'com.github.megatronking.stringfog:interface:4.0.1'
+
+}

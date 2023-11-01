@@ -21,18 +21,19 @@ import java.util.List;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.xposed.R;
+import lin.xposed.common.utils.ScreenParamUtils;
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.load.HookItemLoader;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
-import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
-import lin.xposed.hook.util.LogUtils;
-import lin.xposed.hook.util.qq.ToastTool;
 import lin.xposed.hook.main.itemListView.ItemFragment;
 import lin.xposed.hook.main.itemListView.SettingViewFragment;
 import lin.xposed.hook.main.itemview.base.DefaultItemView;
+import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.main.itemview.info.DirectoryUiInfo;
 import lin.xposed.hook.main.itemview.info.ItemUiInfo;
 import lin.xposed.hook.main.itemview.info.ItemUiInfoGroupWrapper;
+import lin.xposed.hook.util.LogUtils;
+import lin.xposed.hook.util.qq.ToastTool;
 
 /*
  * 初始化流程
@@ -48,6 +49,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
 
+
     public MainAdapter() {
         dataList = new ArrayList<>();
     }
@@ -62,12 +64,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
     //有几个创建几次
+
     /**
      * @param viewType this.getItemType(int)
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();;
+        this.context = parent.getContext();
         //创建ViewHolder，返回每一项的布局类型
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
@@ -75,7 +78,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //判断布局类型
         switch (viewType) {
             //非功能类型
-            case MAIN_ITEM_VIEW ->{
+            case MAIN_ITEM_VIEW -> {
                 view = inflater.inflate(R.layout.main_base_item_layout, parent, false);
                 viewHolder = new DefaultItemView(view);
             }
@@ -103,14 +106,14 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //这里我们通过position参数的得到当前项的实例，然后将数据设置到ViewHolder的TextView即可
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        int radius = 25;
+        int radius = ScreenParamUtils.dpToPx(this.context, 20);
         //将数据和View绑定
         Object itemInfo = dataList.get(position);
         View view = holder.itemView;
         float[] backgroundRadius = {0, 0, 0, 0};//圆角度{左上角,右上角,左下角.右下角}
         boolean isGroupInfo = false;
         //设置上圆角
-        if (itemInfo instanceof ItemUiInfoGroupWrapper groupWrapper ) {
+        if (itemInfo instanceof ItemUiInfoGroupWrapper groupWrapper) {
             isGroupInfo = true;
             backgroundRadius[0] = radius;
             backgroundRadius[1] = radius;
@@ -120,22 +123,24 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             backgroundRadius[0] = radius;
             backgroundRadius[1] = radius;
         }
-        if (itemInfo instanceof OtherViewItemInfo && !(dataList.get(position-1) instanceof OtherViewItemInfo)) {
+        if (itemInfo instanceof OtherViewItemInfo && !(dataList.get(position - 1) instanceof OtherViewItemInfo)) {
             backgroundRadius[0] = radius;
             backgroundRadius[1] = radius;
         }
         //设置下圆角
         if (position == dataList.size() - 1//判断是不是最后一个
-                || dataList.get(position + 1) instanceof ItemUiInfoGroupWrapper
-                || ( dataList.get(position + 1) instanceof OtherViewItemInfo && !(itemInfo instanceof OtherViewItemInfo)) )//判断下一个是不是groupInfo
+                || dataList.get(position + 1) instanceof ItemUiInfoGroupWrapper || (dataList.get(position + 1) instanceof OtherViewItemInfo && !(itemInfo instanceof OtherViewItemInfo)))//判断下一个是不是groupInfo
         {
             backgroundRadius[2] = radius;
             backgroundRadius[3] = radius;
         }
+        int color = isGroupInfo ? view.getContext().getColor(R.color.露草色) : view.getContext().getColor(R.color.white);
+        /*color -= 0xf * 16 ^ 7 + 0xf * 16 ^ 6;
+        color += 5 * 16 ^ 7 + 9 * 16 ^ 6;*/
+
         //构造背景
-        GradientDrawable background = ViewUtils.BackgroundBuilder.createRectangleDrawable(
-                isGroupInfo ? view.getContext().getColor(R.color.QQ蓝) : view.getContext().getColor(R.color.white)
-                , view.getContext().getColor(R.color.银鼠), isGroupInfo ? 0 : 1, backgroundRadius);
+        GradientDrawable background = ViewUtils.BackgroundBuilder.createRectangleDrawable(color, view.getContext().getColor(R.color.white), 0, backgroundRadius);
+        background.setAlpha(170);
         //设置背景
         holder.itemView.setBackground(background);
 
@@ -180,7 +185,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         try {
                             hookItem.loadHook(ClassUtils.getHostLoader());
                         } catch (Exception e) {
-                            ToastTool.show("功能异常\n"+e);
+                            ToastTool.show("功能异常\n" + e);
                             hookItem.getExceptionCollectionToolInstance().addException(e);
                             itemViewHolder.leftTextView.setTextColor(context.getColor(R.color.蔷薇色));
                         }
@@ -205,8 +210,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         fragment.setArguments(bundle);
                         FragmentManager fragmentManager = SettingViewFragment.firstFragment.getParentFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
-                                R.anim.fragment_pop_enter,R.anim.fragment_pop_exit);//动画
+                        transaction.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left, R.anim.fragment_pop_enter, R.anim.fragment_pop_exit);//动画
                         transaction.addToBackStack(null);//添加返回栈
                         transaction.replace(MainSettingActivity.ITEM_LIST_CONTAINER, fragment);//替换
                         transaction.commit();//提交更改

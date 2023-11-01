@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/QQSettingWhite">
+    android:background="@drawable/main_background_image">
 
     <!--导入标题布局-->
     <include layout="@layout/setting_title_bar" />

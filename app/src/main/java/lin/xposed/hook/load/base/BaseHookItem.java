@@ -44,7 +44,7 @@ public abstract class BaseHookItem {
     /**
      * 加载代码
      */
-    public abstract void loadHook(ClassLoader loader) throws Exception;
+    public abstract void loadHook(ClassLoader classLoader) throws Exception;
 
     /*
      * 初始化项目路径
@@ -84,6 +84,7 @@ public abstract class BaseHookItem {
         public void addException(Exception exception) {
             if (this.ErrorList == null) this.ErrorList = new ArrayList<>();
             this.ErrorList.add(exception);
+            //如果是debug则直接写到文件
             if (BuildConfig.DEBUG) LogUtils.addError(exception);
         }
 

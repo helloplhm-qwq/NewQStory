@@ -2,6 +2,7 @@ package lin.xposed.hook;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.ContextWrapper;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -19,43 +20,46 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
     private static final AtomicBoolean Initialized = new AtomicBoolean();
 
     @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws ClassNotFoundException {
         String packageName = loadPackageParam.packageName;
         if (!loadPackageParam.isFirstApplication) return;
-        if (!packageName.matches(HookEnv.HostPackageName)) return;
-
+        if (!packageName.matches(HookEnv.getTargetPackageName())) return;
         //设置当前应用包名
         HookEnv.setCurrentHostAppPackageName(packageName);
 
-        XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+        //设置宿主apk路径
+        HookEnv.setHostApkPath(loadPackageParam.appInfo.sourceDir);
+        XC_MethodHook initHook = new XC_MethodHook() {
             @Override
-            protected void afterHookedMethod(MethodHookParam param) throws ClassNotFoundException {
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 //防止App创建serve的时候Application对象重复创建调用导致的重复注入
                 if (Initialized.getAndSet(true)) return;
-
+                Application application = (Application) param.thisObject;
                 //获取和设置全局上下文和类加载器
-                Context appContext = (Context) param.args[0];
+                Context appContext = application.getApplicationContext();
                 HookEnv.setHostAppContext(appContext);
                 ClassUtils.setHostClassLoader(appContext.getClassLoader());
                 ClassUtils.setModuleLoader(InitInject.class.getClassLoader());
-
-
                 //初始化注入活动代理
-                ActivityProxyManager.initActivityProxyManager(appContext, HookEnv.ModuleApkPath, R.string.app_name);
+                ActivityProxyManager.initActivityProxyManager(appContext, HookEnv.getModuleApkPath(), R.string.app_name);
                 try {
                     //加载hook
-                    HookInit.loadHook();
+                    HookInit.initMainHook();
                 } catch (Exception e) {
                     XposedBridge.log(e);
                 }
-
             }
-        });
+        };
+        Class<?> QFixAppClass = loadPackageParam.classLoader.loadClass("com.tencent.mobileqq.qfix.QFixApplication");
+
+        XposedHelpers.findAndHookMethod(QFixAppClass, "onCreate", initHook);
+//        XposedHelpers.findAndHookMethod(QFixAppClass, "attachBaseContext", Context.class, initHook);
+        XposedHelpers.findAndHookMethod(ContextWrapper.class, "onCreate", initHook);
     }
 
 
     @Override
     public void initZygote(StartupParam startupParam) throws Throwable {
-        HookEnv.ModuleApkPath = startupParam.modulePath;
+        HookEnv.setModuleApkPath(startupParam.modulePath);
     }
 }

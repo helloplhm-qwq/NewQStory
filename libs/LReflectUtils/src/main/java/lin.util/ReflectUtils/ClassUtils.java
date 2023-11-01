@@ -1,6 +1,7 @@
 package lin.util.ReflectUtils;
 
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -8,17 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ClassUtils {
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
     private static final AtomicBoolean LOADER_IS_INIT = new AtomicBoolean();
-    private static final Object[][] baseTypes = {
-            {"int", int.class},
-            {"boolean", boolean.class},
-            {"byte", byte.class},
-            {"long", long.class},
-            {"char", char.class},
-            {"double", double.class},
-            {"float", float.class},
-            {"short", short.class},
-            {"void", void.class}
-    };
+    private static final Object[][] baseTypes = {{"int", int.class}, {"boolean", boolean.class}, {"byte", byte.class}, {"long", long.class}, {"char", char.class}, {"double", double.class}, {"float", float.class}, {"short", short.class}, {"void", void.class}};
     public static ClassLoader ModuleLoader;//模块类加载器
     private static ClassLoader HostLoader;//宿主应用类加载器
 
@@ -38,16 +29,7 @@ public class ClassUtils {
      * 排除常用类
      */
     public static boolean isCommonlyUsedClass(String name) {
-        return name.startsWith("androidx.") || name.startsWith("android.") ||
-                name.startsWith("kotlin.") || name.startsWith("kotlinx.")
-                || name.startsWith("com.tencent.mmkv.")
-                || name.startsWith("com.android.tools.r8.")
-                || name.startsWith("com.google.android.")
-                || name.startsWith("com.google.gson.")
-                || name.startsWith("com.google.common.")
-                || name.startsWith("com.microsoft.appcenter.")
-                || name.startsWith("org.intellij.lang.annotations.")
-                || name.startsWith("org.jetbrains.annotations.");
+        return name.startsWith("androidx.") || name.startsWith("android.") || name.startsWith("kotlin.") || name.startsWith("kotlinx.") || name.startsWith("com.tencent.mmkv.") || name.startsWith("com.android.tools.r8.") || name.startsWith("com.google.android.") || name.startsWith("com.google.gson.") || name.startsWith("com.google.common.") || name.startsWith("com.microsoft.appcenter.") || name.startsWith("org.intellij.lang.annotations.") || name.startsWith("org.jetbrains.annotations.");
     }
 
 
@@ -63,6 +45,25 @@ public class ClassUtils {
             return clazz;
         }
         try {
+            if (className.startsWith("[")) {
+                int index = className.lastIndexOf('[');
+                //获取原类型
+                try {
+                    clazz = getBaseTypeClass(className.substring(index + 1));
+                } catch (Exception e) {
+                    clazz = HostLoader.loadClass(className.substring(index + 1));
+                }
+                for (int i = 0; i < className.length(); i++) {
+                    char ch = className.charAt(i);
+                    if (ch == '[') {
+                        clazz = Array.newInstance(clazz, 0).getClass();
+                    } else {
+                        break;
+                    }
+                }
+                CLASS_CACHE.put(className, clazz);
+                return clazz;
+            }
             try {
                 clazz = getBaseTypeClass(className);
             } catch (Exception e) {

@@ -3,6 +3,7 @@ package lin.xposed.common.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
@@ -21,7 +22,8 @@ public class ViewUtils {
         Context context = titleBar.getContext();
         //获取状态栏高度
         int statusBarHeight = 0;
-        @SuppressLint({"DiscouragedApi", "InternalInsetResource"}) int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        @SuppressLint({"DiscouragedApi", "InternalInsetResource"})
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
         }
@@ -60,7 +62,9 @@ public class ViewUtils {
             radiusBg.setColor(color);
             //设置线条粗心和颜色,px
             if (strokeColor != 0 && strokeWidth != 0) radiusBg.setStroke(strokeWidth, strokeColor);
-            radiusBg.setInnerRadius(radius);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                radiusBg.setInnerRadius(radius);
+            }
             return radiusBg;
         }
 

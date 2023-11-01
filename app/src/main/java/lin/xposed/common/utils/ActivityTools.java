@@ -5,9 +5,12 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +20,29 @@ import lin.xposed.hook.HookEnv;
 
 public class ActivityTools {
 
+    /**
+     * 获取该activity所有view
+     */
+
+    public static List<View> getAllChildViews(Activity activity) {
+        View view = activity.getWindow().getDecorView();
+        return getAllChildViews(view);
+
+    }
+
+    private static List<View> getAllChildViews(View view) {
+        List<View> allChildren = new ArrayList<>();
+        if (view instanceof ViewGroup vp) {
+            for (int i = 0; i < vp.getChildCount(); i++) {
+                View views = vp.getChildAt(i);
+                allChildren.add(views);
+                //递归调用
+                allChildren.addAll(getAllChildViews(views));
+            }
+        }
+        return allChildren;
+
+    }
     /*
      * 注入Res资源到上下文
      */
@@ -29,7 +55,7 @@ public class ActivityTools {
             try {
                 AssetManager assetManager = resources.getAssets();
                 Method method = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
-                method.invoke(assetManager, HookEnv.ModuleApkPath);
+                method.invoke(assetManager, HookEnv.getModuleApkPath());
                 //再次尝试读自己的资源
                 resources.getString(R.string.app_name);
             } catch (Exception ex) {

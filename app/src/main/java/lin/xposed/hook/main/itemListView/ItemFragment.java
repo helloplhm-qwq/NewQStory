@@ -40,6 +40,7 @@ public class ItemFragment extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View RootView = inflater.inflate(R.layout.item_list_layout, container, false);
         RecyclerView recyclerView = RootView.findViewById(R.id.item_list_view);
 

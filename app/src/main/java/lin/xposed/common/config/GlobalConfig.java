@@ -1,4 +1,4 @@
-package lin.xposed.common.utils;
+package lin.xposed.common.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;

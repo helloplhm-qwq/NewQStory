@@ -54,8 +54,8 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         return null;
     }
 
-    protected final void hookAfter(Method method, HookBehavior hookBehavior) {
-        XposedBridge.hookMethod(method, new XC_MethodHook() {
+    protected final void hookAfter(Method method, HookBehavior hookBehavior)  {
+        XposedBridge.hookMethod(method, new XC_MethodHook()  {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 if (isEnabled()) {
@@ -101,5 +101,6 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
     protected interface HookBehavior {
         void execute(XC_MethodHook.MethodHookParam param) throws Throwable;
     }
+
 
 }

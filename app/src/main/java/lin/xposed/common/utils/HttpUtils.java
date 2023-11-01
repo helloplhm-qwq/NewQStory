@@ -2,11 +2,13 @@ package lin.xposed.common.utils;
 
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,6 +22,45 @@ import java.util.Map;
 
 public class HttpUtils {
 
+
+    public static File fileDownload(String urlStr, String downloadDir) {
+        File file = new File(downloadDir);
+        if (!file.exists()) {
+            //如果文件夹不存在，则创建新的的文件夹
+            file.getParentFile().mkdirs();
+        }
+        try {
+            // 统一资源
+            URL url = new URL(urlStr);
+            // 连接类的父类，抽象类
+            URLConnection urlConnection = url.openConnection();
+            // http的连接类
+            HttpURLConnection conn = (HttpURLConnection) urlConnection;
+            // 设定请求的方法，默认是GET
+            conn.setRequestMethod("GET");
+            // 设置字符编码
+            conn.setRequestProperty("Charset", "UTF-8");
+            // 打开到此 URL 引用的资源的通信链接（如果尚未建立这样的连接）。
+            conn.connect();
+            //打开缓冲输入流
+            BufferedInputStream bin = new BufferedInputStream(conn.getInputStream());
+            BufferedOutputStream out =new BufferedOutputStream( new FileOutputStream(file));
+            int size;
+            byte[] buf = new byte[1024];
+            while ((size = bin.read(buf)) != -1) {
+                out.write(buf, 0, size);
+            }
+            out.flush();
+            out.close();
+            bin.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+
     /**
      * 向指定URL发送GET方法的请求
      *
@@ -32,8 +73,7 @@ public class HttpUtils {
         BufferedReader in = null;
         try {
             String urlNameString;
-            if (param != null && !param.equals(""))
-                urlNameString = url + "?" + param;
+            if (param != null && !param.equals("")) urlNameString = url + "?" + param;
             else urlNameString = url;
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
@@ -41,14 +81,12 @@ public class HttpUtils {
             // 设置通用的请求属性
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             // 建立实际的连接
             connection.connect();
 
             // 定义 BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
@@ -81,9 +119,7 @@ public class HttpUtils {
         while (iterator.hasNext()) {
             if (param.length() > 0) params.append("&");
             String key = iterator.next();
-            params.append(key)
-                    .append("=")
-                    .append(param.get(key));
+            params.append(key).append("=").append(param.get(key));
         }
         try {
             URL realUrl = new URL(url);
@@ -92,8 +128,7 @@ public class HttpUtils {
             // 设置通用的请求属性
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -104,8 +139,7 @@ public class HttpUtils {
             // flush输出流的缓冲
             out.flush();
             // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
@@ -146,8 +180,7 @@ public class HttpUtils {
             // 设置通用的请求属性
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -158,8 +191,7 @@ public class HttpUtils {
             // flush输出流的缓冲
             out.flush();
             // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
@@ -190,8 +222,7 @@ public class HttpUtils {
      * @return 服务器响应
      * @throws IOException
      */
-    public static String sendFileList(String actionUrl, Map<String, String> params,
-                                      Map<String, File> files) throws IOException {
+    public static String sendFileList(String actionUrl, Map<String, String> params, Map<String, File> files) throws IOException {
         StringBuilder result = new StringBuilder();
 
         String BOUNDARY = java.util.UUID.randomUUID().toString();
@@ -207,8 +238,7 @@ public class HttpUtils {
         conn.setRequestMethod("POST"); // Post方式
         conn.setRequestProperty("connection", "keep-alive");
         conn.setRequestProperty("Charsert", "UTF-8");
-        conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA
-                + ";boundary=" + BOUNDARY);
+        conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
 
         // 首先组拼文本类型的参数
         StringBuilder sb = new StringBuilder();
@@ -229,16 +259,7 @@ public class HttpUtils {
         // 发送文件数据
         if (files != null && !files.isEmpty()) {
             for (Map.Entry<String, File> file : files.entrySet()) {
-                String fileInfo = PREFIX +
-                        BOUNDARY +
-                        end +
-                        "Content-Disposition: form-data; name=\"file\"; filename=\"" +
-                        file.getKey() + "\"" +
-                        end +
-                        "Content-Type: application/octet-stream; charset=" +
-                        CHARSET +
-                        end +
-                        end;
+                String fileInfo = PREFIX + BOUNDARY + end + "Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getKey() + "\"" + end + "Content-Type: application/octet-stream; charset=" + CHARSET + end + end;
                 System.out.println(fileInfo);
                 outStream.write(fileInfo.getBytes());
                 InputStream is = new FileInputStream(file.getValue());

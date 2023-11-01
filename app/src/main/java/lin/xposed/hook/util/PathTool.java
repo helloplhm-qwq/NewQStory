@@ -3,7 +3,7 @@ package lin.xposed.hook.util;
 import android.content.Context;
 import android.os.Environment;
 
-import lin.xposed.common.utils.GlobalConfig;
+import lin.xposed.common.config.GlobalConfig;
 import lin.xposed.hook.HookEnv;
 
 public class PathTool {
@@ -18,9 +18,7 @@ public class PathTool {
     }
 
     public static String getModuleDataPath() {
-        String dataPath = GlobalConfig.getString("DataPath");
-        if (!dataPath.equals("")) return dataPath;
-        return getDataSavePath(HookEnv.getHostAppContext(), "QStory");
+        return getDataSavePath(HookEnv.getHostAppContext(),"QStory");
     }
 
     public static void updateDataPath(String path) {

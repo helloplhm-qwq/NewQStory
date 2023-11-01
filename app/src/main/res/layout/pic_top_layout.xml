@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pictop"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#80585eaa">
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="10dp"
+        android:text="私聊消息 "
+        android:textColor="@color/桜色"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/pic_send_uin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/type"
+        android:layout_toEndOf="@id/type"
+        android:text="发送者 : 言 (2376738596)"
+        android:textColor="@color/桜色"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/pic_group_uin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/type"
+        android:layout_alignStart="@id/type"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="来自群组 : 0000"
+        android:textColor="@color/桜色" />
+
+</RelativeLayout>

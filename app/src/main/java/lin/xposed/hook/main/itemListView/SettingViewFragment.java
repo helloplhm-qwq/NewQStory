@@ -37,8 +37,6 @@ public class SettingViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //保存每次的实例
         firstFragment = this;
-
-
     }
 
     @Override

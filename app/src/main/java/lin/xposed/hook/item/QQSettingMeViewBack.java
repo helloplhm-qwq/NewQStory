@@ -13,7 +13,7 @@ import de.robv.android.xposed.XposedBridge;
 import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.HookItem;
 
-@HookItem("净化/未分类/侧滑栏右上角上角返回")
+@HookItem("净化/侧滑栏/侧滑栏右上角上角返回")
 public class QQSettingMeViewBack extends BaseSwitchFunctionHookItem {
     @Override
     public void loadHook(ClassLoader loader) throws Exception {
@@ -59,5 +59,10 @@ public class QQSettingMeViewBack extends BaseSwitchFunctionHookItem {
                 }
             }
         }
+    }
+
+    @Override
+    public String getTips() {
+        return "重启生效,该项仅在旧版侧滑栏生效";
     }
 }

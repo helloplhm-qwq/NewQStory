@@ -20,7 +20,7 @@ import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import lin.xposed.hook.util.qq.ToastTool;
 import lin.app.main.ModuleBuildInfo;
-import lin.xposed.widget.MDialog;
+import lin.widget.dialog.base.MDialog;
 
 public class Update extends OtherViewItemInfo {
     private static JSONObject updateInfo;

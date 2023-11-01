@@ -17,10 +17,8 @@ import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 import lin.xposed.hook.HookItem;
-import lin.xposed.hook.util.LogUtils;
-import lin.xposed.hook.util.qq.QQEnvTool;
+import lin.xposed.hook.load.base.BaseSwitchFunctionHookItem;
 
 @HookItem("辅助功能/实验功能/获取游戏好友QQ")
 public class GetGameFriends extends BaseSwitchFunctionHookItem {
@@ -51,7 +49,6 @@ public class GetGameFriends extends BaseSwitchFunctionHookItem {
     }
     @Override
     public void loadHook(ClassLoader loader) throws Exception {
-        LogUtils.addRunLog("TheUin", QQEnvTool.getCurrentUin());
         Method method = MethodUtils.findMethod("com.tencent.mobileqq.activity.ChatSettingActivity", "doOnCreate", boolean.class, new Class[]{Bundle.class});
         hookAfter(method, new HookBehavior() {
             @Override
@@ -108,8 +105,8 @@ public class GetGameFriends extends BaseSwitchFunctionHookItem {
                             但是本功能在用户层并不合法 QQ并没有打算对普通用户出示其游戏好友的QQ号 因为这将导致游戏好友的隐私泄露 !
                             在你使用此功能时需要意识到 这可能并不是合法行为 最好也不要打扰您游戏好友的正常生活
                             使用此功能可能需要独自承担风险 请您悉知!
-
-                            (已分析整体业务逻辑 简述-> 获取游戏好友列表(roleid(明文上发后下发密文),openid等) ->通过roleid获取到好友的信息(uin,头像url等)->加游戏好友全程使用openid+appid通讯)""");
+                            
+                            (整体业务逻辑 简述-> 获取游戏好友列表(roleid(明文上发后下发密文),openid等) ->通过roleid获取到好友的信息(uin,头像url等)->加游戏好友全程使用openid+appid通讯)""");
                     rootView.addView(textView);
                 }
             }

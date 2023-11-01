@@ -12,6 +12,7 @@ public @interface HookItem {
     //功能所在路径+名称 净化/主页净化/底栏精简
     //或 右上角小字/类别名称/又一个小字/功能名称
     String value() default NoPath;
+
     boolean hasPath() default true;
     //默认无路径的话则不会添加到 UI 中
     String NoPath = "NO_PATH";

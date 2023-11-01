@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -30,76 +29,12 @@ import lin.util.ReflectUtils.MethodUtils;
 import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.hook.load.base.BaseHookItem;
+import lin.xposed.hook.main.MainSettingActivity;
 import lin.xposed.hook.util.LogUtils;
 import lin.xposed.hook.util.XPBridge;
-import lin.xposed.hook.main.MainSettingActivity;
 
 @HookItem(value = "注入QQ设置页面", hasPath = false)
 public class QQSettingInject extends BaseHookItem {
-
-
-    private static void test() {
-        Class<?> mainSettingFragmentClass = ClassUtils.getClass("com.tencent.mobileqq.setting.main.MainSettingFragment");
-
-
-        Object groupArray = Array.newInstance(ClassUtils.getClass("com.tencent.mobileqq.widget.listitem.Group"), 0);
-
-        Method i0 = MethodUtils.findMethod("com.tencent.mobileqq.widget.listitem.QUIListItemAdapter", null, void.class, new Class[]{groupArray.getClass()});
-        XPBridge.hookAfter(i0, param -> {
-            try {
-                Object adapter = param.thisObject;
-
-                for (Field field : adapter.getClass().getDeclaredFields()) {
-                    field.setAccessible(true);
-                    if (field.getType() == List.class) {
-                        List finalSettingItemList = (List) field.get(adapter);
-                        if (finalSettingItemList == null || finalSettingItemList.isEmpty())
-                            continue;
-
-                        //for itemList
-                        for (Object finalItem : finalSettingItemList) {
-                            if (finalItem == null) continue;
-                            String itemClassName = finalItem.getClass().getName();
-                            if (itemClassName.startsWith("com.tencent.mobileqq.widget.listitem")) {
-
-                                Object l = FieIdUtils.getUnknownTypeField(finalItem, "l");
-
-                                CharSequence itemName = FieIdUtils.getFirstField(l, CharSequence.class);
-                                LogUtils.addRunLog(itemClassName + " " + itemName);
-                                if (itemName.equals("QStory")) {
-                                    Method setOnClickListenerMethod = MethodUtils.findUnknownReturnTypeMethod(finalItem.getClass(), null, new Class[]{View.OnClickListener.class});
-                                    View.OnClickListener onClickListener = v -> LogUtils.addRunLog("点击了");
-//                                    setOnClickListenerMethod.invoke(finalItem, onClickListener);
-                                }
-
-                            } else if (itemClassName.startsWith("com.tencent.mobileqq.setting.main.a.a")) {
-                                for (Field itemField : finalItem.getClass().getDeclaredFields()) {
-                                    LogUtils.addRunLog("type", itemField.getType().getName());
-                                    itemField.setAccessible(true);
-                                    if (itemField.getType().getName().startsWith("com.tencent.mobileqq.widget.listitem") && !itemField.getType().getName().endsWith("QUISingleLineListItem")) {
-                                        Object newFinalItem = itemField.get(finalItem);
-                                        Object l = null;
-                                        if (newFinalItem != null) {
-                                            l = FieIdUtils.getUnknownTypeField(newFinalItem, "l");
-                                        }
-
-                                        CharSequence itemName = FieIdUtils.getFirstField(l, CharSequence.class);
-                                        LogUtils.addRunLog(itemClassName + " " + itemName);
-                                    }
-                                }
-                            }
-
-                        }
-
-                    }
-                }
-
-
-            } catch (Exception e) {
-                LogUtils.addError(e);
-            }
-        });
-    }
 
     private void hook_QQ_8970_Setting() throws Exception {
 
@@ -271,6 +206,7 @@ public class QQSettingInject extends BaseHookItem {
             StackTraceElement[] stackTraceElements = throwable.getStackTrace();
 
             // 有被自己聪明到)
+            //通过调用栈来确定是不是被指定的方法调用的
             for (StackTraceElement stackTraceElement : stackTraceElements) {
                 //判断是不是以此类名开头的内部类再处理 (也可以避免栈中出现此类后loadClass找不到类抛错)
                 if (!stackTraceElement.getClassName().startsWith(itemClass.getName())) continue;

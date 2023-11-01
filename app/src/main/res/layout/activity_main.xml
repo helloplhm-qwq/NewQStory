@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/QQSettingWhite"
     android:padding="30dp"
-    tools:context="lin.xposed.lin.app.main.MainActivity">
+    tools:context="lin.app.main.MainActivity">
 
     <RelativeLayout
         android:id="@+id/main_item"
@@ -42,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@id/mainIcon"
-            android:text="QStory [New]"
+            android:text="@string/qstory_new"
             android:textColor="@color/black"
             android:textSize="30sp" />
     </RelativeLayout>
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="35dp"
         android:background="@drawable/item_shape"
         android:elevation="6dp"
@@ -83,29 +84,18 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/main_item_end"
+    <ListView
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@id/main_item_1"
+        android:id="@+id/main_item_listview"
+        android:divider="#00000000"
+        android:listSelector="#00000000"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:scrollingCache="false"
+        android:scrollbars="@null"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="35dp"
-        android:background="@drawable/item_shape"
-        android:elevation="6dp"
-        android:padding="10dp"
-        android:translationZ="3dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/main_item_1">
-
-        <TextView
-            android:id="@+id/version_and_buildtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Current version : 4.0 \n Build time : 1980-1-1 19:21:01"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-    </RelativeLayout>
+        android:layout_height="0dp" />
     <!--
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="50dp"

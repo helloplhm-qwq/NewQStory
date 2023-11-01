@@ -1,8 +1,9 @@
-package lin.xposed.hook.main;
+package lin.xposed.hook.main.itemview;
 
 import android.content.Context;
 import android.view.View;
 
+import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.hook.main.itemview.base.OtherViewItemInfo;
 import top.linl.activity.util.ActivityUtils;
 

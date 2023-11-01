@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.library'
+    id "maven-publish"
+}
+
+android {
+    namespace 'top.linl.dexutils_android'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 22
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            consumerProguardFiles "consumer-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+publishing {
+    publications {
+
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.suzhelan'
+            artifactId = 'LDexParser'
+            version = 'v0.21-beta'
+        }
+    }
+}
+
+
+dependencies {
+    implementation 'com.esotericsoftware:kryo:5.5.0'
+    implementation 'com.alibaba:fastjson:2.0.28'
+}

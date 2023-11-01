@@ -1,4 +1,4 @@
-package lin.xposed.widget;
+package lin.widget.dialog.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +18,6 @@ import lin.xposed.R;
  */
 public class MDialog extends Dialog {
     public boolean isStop;
-    boolean ChangedSize;
 
     public MDialog(Context context) {
         super(context, R.style.dialog);
@@ -38,7 +37,6 @@ public class MDialog extends Dialog {
     @Override
     public void show() {
         //如果从大小从未修改就展示前自动修改
-        if (!ChangedSize) setDialogWindowAttr(0.7, 0.5);
         super.show();
     }
 
@@ -65,7 +63,6 @@ public class MDialog extends Dialog {
         lp.width = width;
         lp.height = height;
         this.getWindow().setAttributes(lp);
-        this.ChangedSize = true;
     }
 
     /**
@@ -74,14 +71,13 @@ public class MDialog extends Dialog {
      * @param width 宽度
      * @param height 高度
      */
-    public void setHeightAndWidth(int width, int height) {
+    public void setWidthAndWidth(int width, int height) {
         Window window = this.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         //dialog宽高适应子布局xml
         params.width = width;
-        params.height =height;
+        params.height = height;
         window.setAttributes(params);
-        this.ChangedSize =true;
     }
 
     public void setMinWidth(int minWidth) {
@@ -102,7 +98,7 @@ public class MDialog extends Dialog {
      *
      * @return 宽度px
      */
-    private int getScreenWidth() {
+    protected int getScreenWidth() {
         return getContext().getResources().getDisplayMetrics().widthPixels;
     }
 
@@ -111,7 +107,7 @@ public class MDialog extends Dialog {
      *
      * @return 高度px
      */
-    private int getScreenHeight() {
+    protected int getScreenHeight() {
         return getContext().getResources().getDisplayMetrics().heightPixels;
     }
 }

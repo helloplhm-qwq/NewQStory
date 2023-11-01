@@ -6,6 +6,7 @@
     android:padding="16dp">
 
     <TextView
+        android:layout_marginStart="4dp"
         android:id="@+id/base_item_left_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

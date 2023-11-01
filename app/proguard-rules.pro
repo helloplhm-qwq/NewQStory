@@ -25,6 +25,7 @@
 -keep class * extends android.app.Activity {*;}
 #-keep @lin.xposed.hook.HookItem class * {*;}
 -keep class lin.xposed.R {*;}
+-keep class lin.xposed.LinStringForImpl {*;}
 
 -keepclassmembers enum * {
     public static **[] values();
@@ -37,5 +38,7 @@
 -keep class * implements java.io.Serializable { *; }
 
 -dontwarn javax.**
+-dontwarn java.**
+
 
 
