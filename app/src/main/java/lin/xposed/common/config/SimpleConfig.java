@@ -12,6 +12,7 @@ public class SimpleConfig {
     private String getPath() {
         return PathTool.getModuleDataPath() + "/data/simple/" + fileName;
     }
+
     public SimpleConfig(String fileName) {
         this.fileName = fileName;
         try {

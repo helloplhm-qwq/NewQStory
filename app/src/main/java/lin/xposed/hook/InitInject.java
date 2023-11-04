@@ -28,6 +28,7 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
         //设置宿主apk路径
         HookEnv.setHostApkPath(loadPackageParam.appInfo.sourceDir);
+
         XC_MethodHook initHook = new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -49,9 +50,8 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
                 }
             }
         };
-        Class<?> QFixAppClass = loadPackageParam.classLoader.loadClass("com.tencent.mobileqq.qfix.QFixApplication");
 
-        XposedHelpers.findAndHookMethod(QFixAppClass, "onCreate", initHook);
+        XposedHelpers.findAndHookMethod("com.tencent.mobileqq.qfix.QFixApplication",loadPackageParam.classLoader, "onCreate", initHook);
 //        XposedHelpers.findAndHookMethod(QFixAppClass, "attachBaseContext", Context.class, initHook);
 //        XposedHelpers.findAndHookMethod(ContextWrapper.class, "onCreate", initHook);
     }

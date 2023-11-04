@@ -5,8 +5,6 @@ plugins {
 apply plugin: 'stringfog'
 
 // 导入RandomKeyGenerator类，如果使用HardCodeKeyGenerator，更换下类名
-
-
 import com.github.megatronking.stringfog.plugin.StringFogMode
 import com.github.megatronking.stringfog.plugin.kg.HardCodeKeyGenerator
 
@@ -40,7 +38,7 @@ android {
         minSdk 28
         //noinspection ExpiredTargetSdkVersion
         targetSdk 29
-        versionCode 53
+        versionCode 54
         versionName parseVersionCode(versionCode)
     }
 
@@ -85,6 +83,7 @@ android {
     }
 }
 
+
 static String parseVersionCode(int ver) {
     StringBuilder sb = new StringBuilder()
     char[] VersionCode = ver.toString().toCharArray()
@@ -107,7 +106,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
 
     implementation 'com.github.megatronking.stringfog:xor:5.0.0'
-    implementation 'com.github.megatronking.stringfog:interface:4.0.1'
 
     //防止kt版本不匹配编译异常 (虽然没用到kt语言)
     implementation(platform('org.jetbrains.kotlin:kotlin-bom:1.8.20-RC'))
