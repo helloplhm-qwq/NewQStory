@@ -2,7 +2,6 @@ package lin.xposed.hook;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.ContextWrapper;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -54,7 +53,7 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
 
         XposedHelpers.findAndHookMethod(QFixAppClass, "onCreate", initHook);
 //        XposedHelpers.findAndHookMethod(QFixAppClass, "attachBaseContext", Context.class, initHook);
-        XposedHelpers.findAndHookMethod(ContextWrapper.class, "onCreate", initHook);
+//        XposedHelpers.findAndHookMethod(ContextWrapper.class, "onCreate", initHook);
     }
 
 
