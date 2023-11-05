@@ -7,7 +7,6 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../DevTools/Scoop/apps/gradle/8.4" />
         <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
@@ -22,6 +21,5 @@
         </option>
       </GradleProjectSettings>
     </option>
-    <option name="offlineMode" value="true" />
   </component>
 </project>
