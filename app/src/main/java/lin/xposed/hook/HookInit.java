@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -38,7 +39,7 @@ public class HookInit {
     private static final String[] PERMISSIONS_STORAGE = {"android.permission.READ_EXTERNAL_STORAGE",//外部读
             "android.permission.WRITE_EXTERNAL_STORAGE"//外部写
     };
-
+    private static final AtomicBoolean isStartLoad = new AtomicBoolean(false);
     /*
      * 第二步 结构初始化 这里项目简单 不做结构化的设计模式
      */
@@ -57,11 +58,14 @@ public class HookInit {
             XposedHelpers.findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                    ActivityTools.injectResourcesToContext((Activity) param.thisObject);
-                    HookItemLoader.startFindAllMethod();
+                    if (isStartLoad.getAndSet(true)) return;
+                    Activity activity = (Activity) param.thisObject;
+                    ActivityTools.injectResourcesToContext(activity);
+                    HookItemLoader.startFindAllMethod(activity);
                 }
             });
         } else {
+            if (isStartLoad.getAndSet(true)) return;
             //正常没有过期 扫描本地方法和加载Hook
             HookItemLoader.scanMethod();
             HookItemLoader.initHookItem();

@@ -1,6 +1,7 @@
 package lin.xposed.hook.load;
 
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -105,9 +106,9 @@ public class HookItemLoader {
         SettingLoader.loadSetting();//加载本地数据
     }
 
-    public static void startFindAllMethod() {
+    public static void startFindAllMethod(Activity activity) {
         if (isMethodFindPeriod.getAndSet(true)) return;
-        SimpleLoadingDialog loadingDialog = new SimpleLoadingDialog(ActivityTools.getActivity());
+        SimpleLoadingDialog loadingDialog = new SimpleLoadingDialog(activity);
         loadingDialog.setCanceledOnTouchOutside(false);
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
