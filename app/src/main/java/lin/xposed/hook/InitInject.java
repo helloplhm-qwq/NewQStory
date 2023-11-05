@@ -38,7 +38,7 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
     }
 
     @Override
-    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws ClassNotFoundException {
+    public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam)  {
         String packageName = loadPackageParam.packageName;
         if (!loadPackageParam.isFirstApplication) return;
         if (!packageName.matches(HookEnv.getTargetPackageName())) return;
@@ -85,7 +85,7 @@ public class InitInject implements IXposedHookLoadPackage, IXposedHookZygoteInit
     }
 
     @Override
-    public void initZygote(StartupParam startupParam) throws Throwable {
+    public void initZygote(StartupParam startupParam) {
         HookEnv.setModuleApkPath(startupParam.modulePath);
     }
 }

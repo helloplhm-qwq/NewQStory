@@ -8,6 +8,10 @@ import androidx.annotation.NonNull;
 
 public class BaseSimpleDialog extends MDialog {
 
+    private BaseSimpleDialog() {
+        super(null);
+
+    }
     public BaseSimpleDialog(Context context) {
         super(context);
     }

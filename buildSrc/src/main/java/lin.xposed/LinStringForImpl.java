@@ -19,7 +19,6 @@ public class LinStringForImpl implements IStringFog {
             //toOctalString(int i) 十六进制
             result.append(Integer.toBinaryString(c)).append(" ");
         }
-        System.out.println(TAG);
         return result.toString();
     }
 

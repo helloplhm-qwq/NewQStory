@@ -24,6 +24,8 @@ stringfog {
     // 也可以使用text或者bytes
     mode StringFogMode.bytes
 }
+
+
 String buildType
 android {
     // 注意请加上此配置

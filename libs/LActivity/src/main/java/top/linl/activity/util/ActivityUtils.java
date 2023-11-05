@@ -15,8 +15,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import dalvik.system.DexClassLoader;
-import top.linl.activity.proxy.Info;
+import top.linl.activity.proxy.ActivityProxyEnvInfo;
 
 public class ActivityUtils {
     /**
@@ -28,13 +27,13 @@ public class ActivityUtils {
         Resources resources = context.getResources();
         try {
             //如果能获取到自己的资源说明是自己的Activity或已经注入过了
-            resources.getString(Info.resID);
+            resources.getString(ActivityProxyEnvInfo.resID);
         } catch (Exception e) {
             try {
                 AssetManager assetManager = resources.getAssets();
                 @SuppressLint("DiscouragedPrivateApi")
                 Method method = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
-                method.invoke(assetManager, Info.ModuleApkPath);
+                method.invoke(assetManager, ActivityProxyEnvInfo.ModuleApkPath);
             } catch (Exception ex) {
                 throw new RuntimeException("将Resources资源注入到 " + context.getClass().getName() + " 失败 " + ex);
             }

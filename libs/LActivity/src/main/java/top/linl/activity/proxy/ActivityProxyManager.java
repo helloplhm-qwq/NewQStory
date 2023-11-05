@@ -91,12 +91,12 @@ public class ActivityProxyManager {
      */
     public static void initActivityProxyManager(Context hostContext,
                                                 String ModuleApkPath, int ResId) {
-        if (ResId != 0) Info.resID = ResId;
+        if (ResId != 0) ActivityProxyEnvInfo.resID = ResId;
 
         ClassLoaderTool.setHostClassLoader(hostContext.getClassLoader());
         ClassLoaderTool.setModuleLoader(ActivityProxyManager.class.getClassLoader());
-        Info.ModuleApkPath = ModuleApkPath;
-        Info.HostContext = hostContext;
+        ActivityProxyEnvInfo.ModuleApkPath = ModuleApkPath;
+        ActivityProxyEnvInfo.HostContext = hostContext;
 
         HostActivityClassName = ActivityUtils.getAllActivity(hostContext)[0].name;
         if (Initialized.getAndSet(true)) return;
@@ -133,7 +133,7 @@ public class ActivityProxyManager {
      */
     public static void initActivityProxyManager(Context hostContext,
                                                 String ModuleApkPath) {
-        Info.resID = getModuleRandomID(hostContext, ModuleApkPath);
+        ActivityProxyEnvInfo.resID = getModuleRandomID(hostContext, ModuleApkPath);
         initActivityProxyManager(hostContext, ModuleApkPath, 0);
     }
 

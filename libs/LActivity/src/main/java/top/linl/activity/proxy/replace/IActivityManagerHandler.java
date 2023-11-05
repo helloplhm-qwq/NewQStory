@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import top.linl.activity.proxy.ActivityProxyManager;
-import top.linl.activity.proxy.Info;
+import top.linl.activity.proxy.ActivityProxyEnvInfo;
 
 public class IActivityManagerHandler implements InvocationHandler {
     private final Object activityManager;
@@ -38,7 +38,7 @@ public class IActivityManagerHandler implements InvocationHandler {
                         if (intent.getComponent() != null) {
                             String packageName = intent.getComponent().getPackageName();
                             String className = intent.getComponent().getClassName();
-                            if (packageName.equals(Info.HostContext.getPackageName())
+                            if (packageName.equals(ActivityProxyEnvInfo.HostContext.getPackageName())
                                     && ActivityProxyManager.isModuleActivity(className)) {
                                 Intent wrapper = new Intent();
                                 wrapper.setClassName(
