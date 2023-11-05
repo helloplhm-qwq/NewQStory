@@ -79,14 +79,8 @@ public class ClassUtils {
 
     public static void setHostClassLoader(ClassLoader loader) {
         if (loader == null) throw new ReflectException("类加载器为Null 无法设置");
-        try {
-            loader.loadClass(ClassUtils.class.getName());
-        } catch (Throwable e) {
-            HostLoader = loader;
-            LOADER_IS_INIT.set(true);
-            return;
-        }
-        throw new ReflectException("想要设置的类加载器不是宿主的 !");
+        HostLoader = loader;
+        LOADER_IS_INIT.set(true);
     }
 
     public static ClassLoader getHostLoader() {
