@@ -71,7 +71,7 @@ public class ImageDisplaySender extends BaseSwitchFunctionHookItem {
             if (bundle == null) return;
 
             int chat_type = bundle.getInt("forward_source_uin_type");
-
+            if (chat_type == 0) return;//私聊不需要显示发送者
             RelativeLayout root = null;
             List<View> allViewsOfTheCurrentActivity = ActivityTools.getAllChildViews((Activity) param.thisObject);
             for (View view : allViewsOfTheCurrentActivity) {

@@ -6,7 +6,7 @@ import com.github.megatronking.stringfog.annotation.StringFogIgnore;
 @StringFogIgnore
 public class LinStringForImpl implements IStringFog {
 
-    public static final String TAG = "想学习开口便是 何须行此径 你不说我怎么知道你想要呢 ~ ";
+    public static final String TAG = "想学习开口便是 何须行此径 你不说我怎么知道你想要呢 ~ ";//在逆向字节码文件时会看到的文本
     private static final char[][] keyAndString = {{'0', '喵'}, {'1', '呜'}, {' ', '~'}};
 
     public static String toBinary(String str) {
