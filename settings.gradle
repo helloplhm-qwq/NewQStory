@@ -23,11 +23,16 @@ include ':app'
 
 def libs = new File(rootDir.getPath() + "/libs")
 writeTextToFile(rootDir.getPath()+"/Library manifest","",false)
-for (File module : libs.listFiles()) {
-    def moduleName = ":" + module.getName()
-    include(moduleName)
-    project(moduleName).projectDir = module
-    writeTextToFile(rootDir.getPath()+"/Library manifest",moduleName+"\n",true)
+for (File moduleDir : libs.listFiles()) {
+    if (moduleDir.isDirectory()) {
+        for (File module : moduleDir.listFiles()) {
+            String moduleName = ":" + module.getName()
+            include(moduleName)
+            project(moduleName).projectDir = module
+            writeTextToFile(rootDir.getPath() + "/Library manifest", moduleName + "\n", true)
+        }
+    }
+
 }
 static void writeTextToFile(String path, String content, boolean isAppend) {
     File file = new File(path);

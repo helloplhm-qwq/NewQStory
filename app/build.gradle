@@ -116,7 +116,7 @@ dependencies {
     //导入libs的jar
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 
-    def libs = new File(rootDir.getPath() + "/libs")
+    def libs = new File(rootDir.getPath() + "/libs/implementation")
     for (File module : libs.listFiles()) {
 //        if (module.getName().startsWith("ReflectUtils")) continue;
         implementation(project(':'+module.getName()))
