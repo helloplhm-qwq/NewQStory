@@ -159,9 +159,6 @@ public class HookItemLoader {
                     new Handler(Looper.getMainLooper()).post(() -> loadingDialog.progressBar.setProgress(progress.getAndIncrement()));
                     sendMsgToDialog("当前处理的类 : " + hookItem.getClass().getName());
 
-                    if (!BaseSwitchFunctionHookItem.class.isAssignableFrom(hookItem.getClass())) {
-                        continue;
-                    }
                     if (hookItem instanceof IMethodFinder iMethodFinder) {
                         //start find method
                         MethodFinder finder = new MethodFinder(hookItem.getClass(), dexFinder);

@@ -47,7 +47,7 @@ public class LogUtils {
         return result.toString();
     }
 
-    public static void addError(Exception e) {
+    public static void addError(Throwable e) {
         addError("Error Log", e.toString(), e);
     }
 

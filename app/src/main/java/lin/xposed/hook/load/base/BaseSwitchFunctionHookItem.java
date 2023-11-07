@@ -27,6 +27,7 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
     public View.OnClickListener getViewOnClickListener() {
         return null;
     }
+
     /**
      * 得到功能开关状态
      *
@@ -54,12 +55,16 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
         return null;
     }
 
-    protected final void hookAfter(Method method, HookBehavior hookBehavior)  {
-        XposedBridge.hookMethod(method, new XC_MethodHook()  {
+    protected final void hookAfter(Method method, HookBehavior hookBehavior) {
+        XposedBridge.hookMethod(method, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 if (isEnabled()) {
-                    hookBehavior.execute(param);
+                    try {
+                        hookBehavior.execute(param);
+                    } catch (Throwable e) {
+                        getExceptionCollectionToolInstance().addException(e);
+                    }
                 }
             }
         });
@@ -68,9 +73,13 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
     protected final void hookBefore(Method method, HookBehavior hookBehavior) {
         XposedBridge.hookMethod(method, new XC_MethodHook() {
             @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+            protected void beforeHookedMethod(MethodHookParam param) {
                 if (isEnabled()) {
-                    hookBehavior.execute(param);
+                    try {
+                        hookBehavior.execute(param);
+                    } catch (Throwable e) {
+                        getExceptionCollectionToolInstance().addException(e);
+                    }
                 }
             }
         });
@@ -81,7 +90,11 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 if (isEnabled()) {
-                    hookBehavior.execute(param);
+                    try {
+                        hookBehavior.execute(param);
+                    } catch (Throwable e) {
+                        getExceptionCollectionToolInstance().addException(e);
+                    }
                 }
             }
         });
@@ -92,7 +105,11 @@ public abstract class BaseSwitchFunctionHookItem extends BaseHookItem {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 if (isEnabled()) {
-                    hookBehavior.execute(param);
+                    try {
+                        hookBehavior.execute(param);
+                    } catch (Throwable e) {
+                        getExceptionCollectionToolInstance().addException(e);
+                    }
                 }
             }
         });

@@ -69,19 +69,19 @@ public abstract class BaseHookItem {
         /**
          * 异常列表
          */
-        private List<Exception> ErrorList;
+        private List<Throwable> ErrorList;
 
         /**
          * 获取异常列表
          */
-        public List<Exception> getErrorList() {
+        public List<Throwable> getErrorList() {
             return this.ErrorList;
         }
 
         /**
          * 添加异常到异常列表
          */
-        public void addException(Exception exception) {
+        public void addException(Throwable exception) {
             if (this.ErrorList == null) this.ErrorList = new ArrayList<>();
             this.ErrorList.add(exception);
             //如果是debug则直接写到文件
