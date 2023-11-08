@@ -11,10 +11,13 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.HookItem;
 import lin.xposed.hook.load.base.BaseHookItem;
 
-@HookItem(value = "禁止启动时触发摇一摇跳转到其他软件", hasPath = false)
+/**
+ * 该项已废弃 因为hook ClassLoader太过消耗性能 直到找到合适的实现方法时会开放
+ */
+@Deprecated
+//@HookItem(value = "禁止启动时触发摇一摇跳转到其他软件", hasPath = false)
 public class HookSensorEventListener extends BaseHookItem {
     private final long TOTAL_TIME = 1000 * 10;
     private final long ON_TICK_TIME = 1000;

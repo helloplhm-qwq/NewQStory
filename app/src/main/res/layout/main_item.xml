@@ -16,6 +16,7 @@
         android:translationZ="3dp">
 
         <TextView
+            android:gravity="center"
             android:id="@+id/main_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

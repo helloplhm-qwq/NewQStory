@@ -11,12 +11,12 @@ import java.util.Map;
 
 import lin.util.ReflectUtils.ClassUtils;
 import lin.util.ReflectUtils.MethodUtils;
-import lin.xposed.hook.load.HookItemLoader;
+import lin.xposed.hook.load.MethodFindProcessor;
 import top.linl.dexparser.DexFinder;
 
 public class MethodFinder {
     private final Class<?> hookItem;
-    private final HashMap<String, Method[]> container = new HashMap<>();
+    private final HashMap<String, Method> container = new HashMap<>();
     private final DexFinder dexFinder;
 
     public MethodFinder(Class<?> hookItem, DexFinder dexFinder) {
@@ -25,35 +25,25 @@ public class MethodFinder {
     }
 
     public Method[] findMethodString(String str) throws Exception {
-        if (HookItemLoader.isMethodFindPeriod.get()) {
+        if (MethodFindProcessor.isMethodFindPeriod.get()) {
             Method[] methods = dexFinder.findMethodString(str).toArray(new Method[0]);
-            container.put(str, methods);
+//            container.put(str, methods);
             return methods;
         }
-        return container.get(str);
+        return null;
     }
 
-    public JSONObject getResults() {
-        /*
-         * {
-         *   "Class" : {
-         *                  "key" : [methodInfo,...]
-         *              }
-         *   "HookItemName" : {
-         *                  "key" : [],
-         *                  "key" : []
-         *                   }
-         * }
-         *
-         * */
+    public Method getMethod(String methodId) {
+        return container.get(methodId);
+    }
+    public void putMethod(String methodId, Method method) {
+        container.put(methodId, method);
+    }
+    private JSONObject getFindResults() {
         JSONObject result = new JSONObject();
-        for (Map.Entry<String, Method[]> entry : container.entrySet()) {
+        for (Map.Entry<String, Method> entry : container.entrySet()) {
             try {
-                JSONArray methodInfoLIst = new JSONArray();
-                for (Method method : entry.getValue()) {
-                    methodInfoLIst.put(getMethodInfo(method));
-                }
-                result.put(entry.getKey(), methodInfoLIst);
+                result.put(entry.getKey(), getMethodInfo(entry.getValue()));
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -61,18 +51,12 @@ public class MethodFinder {
         return result;
     }
 
-    public void loadAllMethod(JSONObject methodInfoList) throws Exception {
+    private void loadAllMethod(JSONObject methodInfoList) throws Exception {
         Iterator<String> iterator = methodInfoList.keys();
         while (iterator.hasNext()) {
             String key = iterator.next();
-            JSONArray value = methodInfoList.getJSONArray(key);
-            Method[] methods = new Method[value.length()];
-            for (int i = 0; i < value.length(); i++) {
-                JSONObject methodInfo = value.getJSONObject(i);
-                Method method = findMethodByJSON(methodInfo);
-                methods[i] = method;
-            }
-            container.put(key, methods);
+            Method method = findMethodByJSON(methodInfoList.getJSONObject(key));
+            container.put(key, method);
         }
     }
 
@@ -88,7 +72,7 @@ public class MethodFinder {
         return MethodUtils.findMethod(declareClass, methodName, ClassUtils.getClass(ReturnType), params);
     }
 
-    public JSONObject getMethodInfo(Method method) {
+    private JSONObject getMethodInfo(Method method) {
         try {
             method.setAccessible(true);
             JSONObject result = new JSONObject();

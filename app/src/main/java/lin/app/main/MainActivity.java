@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -26,6 +27,7 @@ import lin.xposed.BuildConfig;
 import lin.xposed.R;
 import lin.xposed.databinding.ActivityMainBinding;
 import lin.xposed.hook.main.itemview.AddTelegramChannel;
+import lin.xposed.hook.main.itemview.GithubSourceCode;
 import top.linl.annotationprocessor.AnnotationClassNameTools;
 
 
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView itemListView;
     private ArrayAdapter<MainItemListView.ItemInfo> itemInfoArrayAdapter;
 
+    @Deprecated
     public static boolean verifyStoragePermissions(Context context) {
         try {
             //检测是否有写的权限
@@ -111,27 +114,42 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void initView() {
+        initItem();
+        itemInfoArrayAdapter.notifyDataSetChanged();
+        RequestPermissions();
+    }
+
+    private void initItem() {
         try {
+            String githubOpenSourceCode = "github 开源地址\nSuzhelan/NewQstory";
+            MainItemListView.ItemInfo githubOpenSourceCodeItem = new MainItemListView.ItemInfo(githubOpenSourceCode,new GithubSourceCode(this).getOnClick()){
+                @Override
+                public void onTextViewCreate(TextView textView) {
+                    super.onTextViewCreate(textView);
+                    textView.setText(MainItemListView.setStringColor(githubOpenSourceCode,githubOpenSourceCode.indexOf("Suzhelan"),githubOpenSourceCode.length(),getColor(R.color.秘色)));
+                }
+            };
+            itemInfoList.add(githubOpenSourceCodeItem);
+
+            String telegram = "Telegram channel(telegram构建频道)\nhttps://t.me/WhenFlowersAreInBloom";
+            MainItemListView.ItemInfo telegramItem = new MainItemListView.ItemInfo(telegram,new AddTelegramChannel(this).getOnClick()){
+                @Override
+                public void onTextViewCreate(TextView textView) {
+                    super.onTextViewCreate(textView);
+                    textView.setText(MainItemListView.setStringColor(telegram,telegram.indexOf("https:"),telegram.length(),getColor(R.color.秘色)));
+                }
+            };
+            itemInfoList.add(telegramItem);
+
             //获取和设置构建时间
             String buildTime = (String) MainActivity.class.getClassLoader().loadClass(AnnotationClassNameTools.getClassName()).getField("BUILD_TIME").get(null);
             String versionAndBuildTimeInfo = String.format("Current version : %s%nBuild time : %s", BuildConfig.VERSION_NAME, buildTime);
             itemInfoList.add(new MainItemListView.ItemInfo(versionAndBuildTimeInfo, null));
 
+
         } catch (Exception e) {
 
         }
-        /*String disposition = "生成配置文件";
-        itemInfoList.add(new MainItemListView.ItemInfo(disposition, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        }));*/
-        itemInfoArrayAdapter.notifyDataSetChanged();
-        View telegram_channel = (View) binding.telegramChannel.getParent();
-        telegram_channel.setOnClickListener(new AddTelegramChannel(this).getOnClick());
-
-        RequestPermissions();
     }
 
     protected void requestTranslucentStatusBar() {

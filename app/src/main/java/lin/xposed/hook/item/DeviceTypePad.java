@@ -51,5 +51,11 @@ public class DeviceTypePad extends BaseSwitchFunctionHookItem implements IMethod
     @Override
     public void startFind(MethodFinder methodFinder) throws Exception {
         initDeviceTypeMethod = methodFinder.findMethodString("initDeviceType type = ")[0];
+        methodFinder.putMethod("initDeviceType type = ", initDeviceTypeMethod);
+    }
+
+    @Override
+    public void getMethod(MethodFinder finder) {
+        initDeviceTypeMethod = finder.getMethod("initDeviceType type = ");
     }
 }

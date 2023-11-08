@@ -32,7 +32,6 @@ import top.linl.dexparser.util.FileUtils;
 public class DexFinder {
 
     private Builder builder;
-    private File[] cacheList;
 
     private CountDownLatch allTaskOver;
 
@@ -131,6 +130,9 @@ public class DexFinder {
                 String method_string = dexParser.dexStringIdsList[integer].getString(dexParser);
                 if (method_string.contains(string)) {
                     String methodName = dexParser.dexStringIdsList[dexMethodId.name_idx].getString(dexParser);
+                    if (methodName.equals("<init>") || methodName.equals("<cinit>")) {
+                        continue MethodFor;
+                    }
                     String declareClass = dexParser.dexStringIdsList[dexParser.dexTypeIdsList[dexMethodId.class_ids].descriptor_idx].getString(dexParser);
                     DexTypeId[] methodParams = dexMethodId.getMethodParams(dexParser);
                     Class<?> clz = DexTypeUtils.findClass(declareClass);
@@ -139,6 +141,8 @@ public class DexFinder {
                         String className = dexParser.dexStringIdsList[methodParams[i].descriptor_idx].getString(dexParser);
                         params[i] = DexTypeUtils.findClass(className);
                     }
+                    File file = new File("/storage/emulated/0/Android/data/com.tencent.mobileqq/files/QStory/Log/ErrorLog/Test.txt");
+                    FileUtils.writeTextToFile(file.getAbsolutePath(),methodName+":"+clz.getName()+"\n",true);
                     Method method = clz.getDeclaredMethod(methodName, params);
                     result.add(method);
                     continue MethodFor;
@@ -179,6 +183,13 @@ public class DexFinder {
         return result;
     }
 
+    public static Builder builder(ClassLoader classLoader,String apkPath) throws Exception {
+        return new Builder(classLoader, apkPath);
+    }
+
+    public static Builder builder(String apkPath) throws Exception {
+        return new Builder(apkPath);
+    }
     /**
      *
      */
@@ -207,6 +218,12 @@ public class DexFinder {
             apkZipFile = new ZipFile(apkPath);
         }
 
+        public Builder(String apkPath) throws Exception {
+            dexFinder = new DexFinder();
+            dexFinder.builder = this;
+            this.apkPath = apkPath;
+            apkZipFile = new ZipFile(apkPath);
+        }
         public Builder setOnProgress(OnProgress onProgress) {
             this.mOnProgress = onProgress;
             return this;

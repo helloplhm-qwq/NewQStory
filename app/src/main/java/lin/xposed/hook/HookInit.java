@@ -29,6 +29,7 @@ import lin.xposed.R;
 import lin.xposed.common.utils.ActivityTools;
 import lin.xposed.common.utils.ViewUtils;
 import lin.xposed.hook.load.HookItemLoader;
+import lin.xposed.hook.load.MethodFindProcessor;
 import lin.xposed.hook.util.PathTool;
 import lin.xposed.hook.util.qq.ToastTool;
 
@@ -40,10 +41,9 @@ public class HookInit {
             "android.permission.WRITE_EXTERNAL_STORAGE"//外部写
     };
     private static final AtomicBoolean isStartLoad = new AtomicBoolean(false);
-    /*
-     * 第二步 结构初始化 这里项目简单 不做结构化的设计模式
-     */
+
     public static void initMainHook() throws Exception {
+
         //判断读写权限
         if (!verifyStoragePermissions()) {
             XposedHelpers.findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
@@ -55,19 +55,20 @@ public class HookInit {
         }
         //方法数据已过期 开始查找方法
         else if (!HookItemLoader.methodDataIsOutOfDate()) {
+            //需要有activity才能展示查找方法的动画 所以等activity创建再开始查找
             XposedHelpers.findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     if (isStartLoad.getAndSet(true)) return;
                     Activity activity = (Activity) param.thisObject;
                     ActivityTools.injectResourcesToContext(activity);
-                    HookItemLoader.startFindAllMethod(activity);
+                    MethodFindProcessor.startFindAllMethod(activity);
                 }
             });
         } else {
             if (isStartLoad.getAndSet(true)) return;
             //正常没有过期 扫描本地方法和加载Hook
-            HookItemLoader.scanMethod();
+            MethodFindProcessor.scanMethod();
             HookItemLoader.initHookItem();
         }
     }

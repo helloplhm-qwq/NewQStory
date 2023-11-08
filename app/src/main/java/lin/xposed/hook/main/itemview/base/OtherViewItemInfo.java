@@ -6,11 +6,12 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import lin.xposed.hook.main.itemview.EndAllActivity;
+import lin.xposed.hook.main.itemview.AddTelegramChannel;
 import lin.xposed.hook.main.itemview.AddTelegramGroup;
+import lin.xposed.hook.main.itemview.EndAllActivity;
+import lin.xposed.hook.main.itemview.GithubSourceCode;
 import lin.xposed.hook.main.itemview.StartFindMethod;
 import lin.xposed.hook.main.itemview.Update;
-import lin.xposed.hook.main.itemview.AddTelegramChannel;
 
 
 /**
@@ -24,6 +25,7 @@ public abstract class OtherViewItemInfo {
     static {
         OTHER_VIEW_ITEM_INFO_LIST.add(EndAllActivity.class);
         OTHER_VIEW_ITEM_INFO_LIST.add(Update.class);
+        OTHER_VIEW_ITEM_INFO_LIST.add(GithubSourceCode.class);
         OTHER_VIEW_ITEM_INFO_LIST.add(AddTelegramChannel.class);
         OTHER_VIEW_ITEM_INFO_LIST.add(AddTelegramGroup.class);
         OTHER_VIEW_ITEM_INFO_LIST.add(StartFindMethod.class);

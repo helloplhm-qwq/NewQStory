@@ -115,6 +115,11 @@ public class DownloadEmoji extends BaseSwitchFunctionHookItem implements IMethod
     @Override
     public void startFind(MethodFinder methodFinder) throws Exception {
         Method m = methodFinder.findMethodString("restoreSaveInstanceState execute")[0];
-        emojiInfoClass = m.getDeclaringClass();
+        methodFinder.putMethod("restoreSaveInstanceState execute", m);
+    }
+
+    @Override
+    public void getMethod(MethodFinder finder) {
+        emojiInfoClass = finder.getMethod("restoreSaveInstanceState execute").getDeclaringClass();
     }
 }
